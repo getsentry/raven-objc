@@ -34,7 +34,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A46FE99156FA72300D97F26 /* Raven.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Raven.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A33DE37156FA9D500AB3299 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		0A33DE39156FAA0B00AB3299 /* AUTHORS */ = {isa = PBXFileReference; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		0A33DE3A156FAA0B00AB3299 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		0A46FE99156FA72300D97F26 /* RavenExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RavenExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A46FE9D156FA72300D97F26 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0A46FE9F156FA72300D97F26 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0A46FEA1156FA72300D97F26 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -89,13 +92,16 @@
 				0A46FEC1156FA72300D97F26 /* RavenTests */,
 				0A46FE9C156FA72300D97F26 /* Frameworks */,
 				0A46FE9A156FA72300D97F26 /* Products */,
+				0A33DE39156FAA0B00AB3299 /* AUTHORS */,
+				0A33DE3A156FAA0B00AB3299 /* LICENSE */,
+				0A33DE37156FA9D500AB3299 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
 		0A46FE9A156FA72300D97F26 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0A46FE99156FA72300D97F26 /* Raven.app */,
+				0A46FE99156FA72300D97F26 /* RavenExample.app */,
 				0A46FEBA156FA72300D97F26 /* RavenTests.octest */,
 			);
 			name = Products;
@@ -181,7 +187,7 @@
 			);
 			name = RavenExample;
 			productName = Raven;
-			productReference = 0A46FE99156FA72300D97F26 /* Raven.app */;
+			productReference = 0A46FE99156FA72300D97F26 /* RavenExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0A46FEB9156FA72300D97F26 /* RavenTests */ = {
