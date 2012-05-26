@@ -15,13 +15,36 @@ Alternatively you can add this code as a Git submodule:
 
 
 ## How to get started
-TODO
+While you are free to initialize as many instances of `RavenClient` as is appropriate for your application, there is a shared singleton instance that is globally available. This singleton instance is often configured in your app delegate's `application:didFinishLaunchingWithOptions:` method:
+
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Initialize the RavenClient singleton
+    [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
+    return YES;
+}
+```
+The first `RavenClient` that is initialized is automatically configured as the singleton instance and becomes available via the `sharedClient` singleton method:
+
+```objective-c
+NSLog(@"I am your RavenClient singleton : %@", [RavenClient sharedClient]);
+```
+
+After initializing the client, you can use it like this:
+
+```objective-c
+// Simple method
+[[RavenClient sharedClient] captureMessage:@"TEST 1 2 3"];
+
+// Better way, this macro also captures the stacktrace of the calling method
+RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
+```
 
 
 ## Requirements
 
 ### JSON
-raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html) for JSON files, if it is available. If your app targets a platform where this class is not available (iOS < 5.0) you can include one of the following JSON libraries to your project for raven-objc to automatically detect and use.
+raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html) to generate the JSON payload, if it is available. If your app targets a platform where this class is not available (i.e. iOS < 5.0) you can include one of the following JSON libraries to your project for raven-objc to automatically detect and use.
 
 * [JSONKit](https://github.com/johnezang/JSONKit)
 * [SBJson](https://stig.github.com/json-framework/)
@@ -42,7 +65,7 @@ https://github.com/kevinrenskers/raven-objc/issues
 raven-objc is an open source project and your contribution is very much appreciated.
 
 1. Check for [open issues](https://github.com/kevinrenskers/raven-objc/issues) or [open a fresh issue](https://github.com/kevinrenskers/raven-objc/issues/new) to start a discussion around a feature idea or a bug.
-2. Fork the [repository on Github](https://github.com/kevinrenskers/raven-objc) and make your changes on the **develop** branch (or branch off of it).
+2. Fork the [repository on Github](https://github.com/kevinrenskers/raven-objc) and make your changes.
 3. Make sure to add yourself to AUTHORS and send a pull request.
 
 

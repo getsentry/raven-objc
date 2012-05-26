@@ -9,6 +9,14 @@
 #import "RavenClient.h"
 #import "RavenJSONUtilities.h"
 
+NSString * const kRavenLogLevelArray[] = {
+    @"debug",
+    @"info",
+    @"warning",
+    @"error",
+    @"fatal"
+};
+
 static RavenClient *sharedClient = nil;
 
 
@@ -23,6 +31,7 @@ static RavenClient *sharedClient = nil;
 
 - (BOOL)parseDSN:(NSString *)DSN;
 - (NSString *)generateUUID;
+- (void)sendDictionary:(NSDictionary *)dict;
 - (void)sendJSON:(NSData *)JSON;
 
 @end
@@ -37,6 +46,8 @@ static RavenClient *sharedClient = nil;
 @synthesize projectId = _projectId;
 @synthesize receivedData = _receivedData;
 
+#pragma mark - Setters and getters
+
 - (NSDateFormatter *)dateFormatter {
     if (!_dateFormatter) {
         NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:@"UTC"];
@@ -44,9 +55,11 @@ static RavenClient *sharedClient = nil;
         [_dateFormatter setTimeZone:timeZone];
         [_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
     }
-    
+
     return _dateFormatter;
 }
+
+#pragma mark - Public methods
 
 + (RavenClient *)clientWithDSN:(NSString *)DSN {
     RavenClient *client = [[self alloc] initWithDSN:DSN];
@@ -71,19 +84,63 @@ static RavenClient *sharedClient = nil;
             sharedClient = self;
         }
     }
+
     return self;
 }
 
+- (void)captureMessage:(NSString *)message {
+    [self captureMessage:message level:kRavenLogLevelDebugInfo];
+}
+
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level {
+    [self captureMessage:message level:level method:nil file:nil line:0];
+}
+
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(NSString *)method file:(NSString *)file line:(NSInteger)line {
+    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                          [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
+                          self.projectId, @"project",
+                          [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
+                          message, @"message",
+                          kRavenLogLevelArray[level], @"level",
+                          nil];
+
+    if (file) {
+        [data setObject:file forKey:@"culprit"];
+    }
+    
+    if (method && file && line) {
+        NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
+                               file, @"filename", 
+                               method, @"function", 
+                               [NSNumber numberWithInt:line], @"lineno", 
+                               nil];
+        
+        NSDictionary *stacktrace = [NSDictionary dictionaryWithObjectsAndKeys:
+                      [NSArray arrayWithObject:frame], @"frames", 
+                      nil];
+
+        [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];    
+    }
+
+    [self sendDictionary:data];
+}
+
+- (void)captureException:(NSException *)exception {
+}
+
+#pragma mark - Private methods
+
 - (BOOL)parseDSN:(NSString *)DSN {
     NSURL *DSNURL = [NSURL URLWithString:DSN];
-
+    
     NSMutableArray *pathComponents = [[DSNURL pathComponents] mutableCopy];
     if (![pathComponents count]) {
         return NO;
     }
-
+    
     [pathComponents removeObjectAtIndex:0]; // always remove the first slash
-
+    
     self.projectId = [pathComponents lastObject]; // project id is the last element of the path
     if (!self.projectId) {
         return NO;
@@ -91,17 +148,17 @@ static RavenClient *sharedClient = nil;
     
     [pathComponents removeLastObject]; // remove the project id...
     NSString *path = [pathComponents componentsJoinedByString:@"/"]; // ...and construct the path again
-
+    
     // Add a slash to the end of the path if there is a path
     if (![path isEqualToString:@""]) {
         path = [path stringByAppendingString:@"/"];
     }
-
+    
     NSNumber *port = [DSNURL port];
     if (!port) {
         port = [NSNumber numberWithInteger:80];
     }
-
+    
     self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@api/store/", [DSNURL scheme], [DSNURL host], path]];
     self.publicKey = [DSNURL user];
     self.secretKey = [DSNURL password];
@@ -116,27 +173,10 @@ static RavenClient *sharedClient = nil;
     return (__bridge NSString *)string;
 }
 
-- (void)captureMessage:(NSString *)message {
-//    "event_id": "fc6d8c0c43fc4630ad850ee518f1b9d0",
-//    "project": "default",
-//    "culprit": "my.module.function_name",
-//    "timestamp": "2011-05-02T17:41:36",
-//    "message": "SyntaxError: Wattttt!"
-    
-    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
-                          self.projectId, @"project",
-                          @"my.module.function_name", @"culprit",
-                          [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
-                          message, @"message",
-                          nil];
-
+- (void)sendDictionary:(NSDictionary *)dict {
     NSError *error = nil;
-    NSData *JSON = JSONEncode(data, &error);
+    NSData *JSON = JSONEncode(dict, &error);
     [self sendJSON:JSON];
-}
-
-- (void)captureException:(NSException *)exception {
 }
 
 - (void)sendJSON:(NSData *)JSON {
