@@ -47,6 +47,7 @@
 
 - (IBAction)sendException {
     [self addStatus:@"Sending exception..."];
+    [self performSelector:@selector(nonExistingSelector)];
 }
 
 #pragma mark - UITableViewDelegate

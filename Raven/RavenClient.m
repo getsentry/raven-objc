@@ -46,6 +46,10 @@ static RavenClient *sharedClient = nil;
 @synthesize projectId = _projectId;
 @synthesize receivedData = _receivedData;
 
+void exceptionHandler(NSException *exception) {
+	[[RavenClient sharedClient] captureException:exception];
+}
+
 #pragma mark - Setters and getters
 
 - (NSDateFormatter *)dateFormatter {
@@ -96,7 +100,7 @@ static RavenClient *sharedClient = nil;
     [self captureMessage:message level:level method:nil file:nil line:0];
 }
 
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(NSString *)method file:(NSString *)file line:(NSInteger)line {
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line {
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                           [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
                           self.projectId, @"project",
@@ -106,16 +110,16 @@ static RavenClient *sharedClient = nil;
                           nil];
 
     if (file) {
-        [data setObject:file forKey:@"culprit"];
+        [data setObject:[[NSString stringWithUTF8String:file] lastPathComponent] forKey:@"culprit"];
     }
-    
+
     if (method && file && line) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
-                               file, @"filename", 
-                               method, @"function", 
+                               [[NSString stringWithUTF8String:file] lastPathComponent], @"filename", 
+                               [NSString stringWithUTF8String:method], @"function", 
                                [NSNumber numberWithInt:line], @"lineno", 
                                nil];
-        
+
         NSDictionary *stacktrace = [NSDictionary dictionaryWithObjectsAndKeys:
                       [NSArray arrayWithObject:frame], @"frames", 
                       nil];
@@ -127,42 +131,48 @@ static RavenClient *sharedClient = nil;
 }
 
 - (void)captureException:(NSException *)exception {
+    NSLog(@"Exception!! %@", exception);
+    // TODO...
+}
+
+- (void)setupExceptionHandler {
+    NSSetUncaughtExceptionHandler(&exceptionHandler);
 }
 
 #pragma mark - Private methods
 
 - (BOOL)parseDSN:(NSString *)DSN {
     NSURL *DSNURL = [NSURL URLWithString:DSN];
-    
+
     NSMutableArray *pathComponents = [[DSNURL pathComponents] mutableCopy];
     if (![pathComponents count]) {
         return NO;
     }
-    
+
     [pathComponents removeObjectAtIndex:0]; // always remove the first slash
-    
+
     self.projectId = [pathComponents lastObject]; // project id is the last element of the path
     if (!self.projectId) {
         return NO;
     }
-    
+
     [pathComponents removeLastObject]; // remove the project id...
     NSString *path = [pathComponents componentsJoinedByString:@"/"]; // ...and construct the path again
-    
+
     // Add a slash to the end of the path if there is a path
     if (![path isEqualToString:@""]) {
         path = [path stringByAppendingString:@"/"];
     }
-    
+
     NSNumber *port = [DSNURL port];
     if (!port) {
         port = [NSNumber numberWithInteger:80];
     }
-    
+
     self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@api/store/", [DSNURL scheme], [DSNURL host], path]];
     self.publicKey = [DSNURL user];
     self.secretKey = [DSNURL password];
-    
+
     return YES;
 }
 
@@ -182,7 +192,7 @@ static RavenClient *sharedClient = nil;
 - (void)sendJSON:(NSData *)JSON {
     NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
     NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1, sentry_timestamp=%f, sentry_key=%@", timestamp, self.publicKey];
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.serverURL];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -190,7 +200,7 @@ static RavenClient *sharedClient = nil;
     [request setValue:[NSString stringWithFormat:@"%d", [JSON length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:JSON];
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
-    
+
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     if (connection) {
         self.receivedData = [NSMutableData data];

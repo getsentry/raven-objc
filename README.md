@@ -30,14 +30,38 @@ The first `RavenClient` that is initialized is automatically configured as the s
 NSLog(@"I am your RavenClient singleton : %@", [RavenClient sharedClient]);
 ```
 
-After initializing the client, you can use it like this:
+### Sending messages
 
 ```objective-c
-// Simple method
+// Sending a message, does not include a stacktrace:
 [[RavenClient sharedClient] captureMessage:@"TEST 1 2 3"];
 
-// Better way, this macro also captures the stacktrace of the calling method
+// Sending a message with the stacktrace:
+[[RavenClient sharedClient] captureMessage:@"TEST 1 2 3" level:kRavenLogLevelDebugInfo method:__FUNCTION__ file:__FILE__ line:__LINE__];
+
+// Easier macro to send a message with the stacktrace:
 RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
+
+```
+
+### Handling exceptions
+
+```objective-c
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Initialize the RavenClient singleton
+    [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
+    // Setup the global exception handler
+    [[RavenClient sharedClient] setupExceptionHandler];
+    return YES;
+}
+
+// Or, capture a single exception:
+@try {
+    [self performSelector:@selector(nonExistingSelector)];
+}
+@catch (NSException *exception) {
+    [[RavenClient sharedClient] captureException:exception];
+}
 ```
 
 

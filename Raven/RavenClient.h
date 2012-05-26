@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define RavenCaptureMessage( s, ... ) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:(s), ##__VA_ARGS__] level:kRavenLogLevelDebugInfo method:[NSString stringWithUTF8String:__FUNCTION__] file:[[NSString stringWithUTF8String:__FILE__] lastPathComponent] line:__LINE__]
+#define RavenCaptureMessage( s, ... ) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:(s), ##__VA_ARGS__] level:kRavenLogLevelDebugInfo method:__FUNCTION__ file:__FILE__ line:__LINE__]
 
 typedef enum {
     kRavenLogLevelDebug,
@@ -27,7 +27,8 @@ typedef enum {
 - (id)initWithDSN:(NSString *)DSN;
 - (void)captureMessage:(NSString *)message;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(NSString *)method file:(NSString *)file line:(NSInteger)line;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
 - (void)captureException:(NSException *)exception;
+- (void)setupExceptionHandler;
 
 @end
