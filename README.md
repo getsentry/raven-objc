@@ -19,8 +19,8 @@ While you are free to initialize as many instances of `RavenClient` as is approp
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Initialize the RavenClient singleton
     [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
+    // [...]
     return YES;
 }
 ```
@@ -46,16 +46,20 @@ RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
 
 ### Handling exceptions
 
+Setup a global exception handler:
+
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Initialize the RavenClient singleton
     [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
-    // Setup the global exception handler
     [[RavenClient sharedClient] setupExceptionHandler];
+    // [...]
     return YES;
 }
+```
 
-// Or, capture a single exception:
+Or, capture a single exception:
+
+```objective-c
 @try {
     [self performSelector:@selector(nonExistingSelector)];
 }
