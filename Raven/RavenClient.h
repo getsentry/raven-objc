@@ -21,13 +21,17 @@ typedef enum {
 
 @interface RavenClient : NSObject <NSURLConnectionDelegate>
 
+// Singleton and initializers
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
 + (RavenClient *)sharedClient;
-
 - (id)initWithDSN:(NSString *)DSN;
+
+// Messages
 - (void)captureMessage:(NSString *)message;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
+
+// Exceptions
 - (void)captureException:(NSException *)exception;
 - (void)setupExceptionHandler;
 

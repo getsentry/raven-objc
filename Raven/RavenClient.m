@@ -63,7 +63,7 @@ void exceptionHandler(NSException *exception) {
     return _dateFormatter;
 }
 
-#pragma mark - Public methods
+#pragma mark - Singleton and initializers
 
 + (RavenClient *)clientWithDSN:(NSString *)DSN {
     RavenClient *client = [[self alloc] initWithDSN:DSN];
@@ -91,6 +91,8 @@ void exceptionHandler(NSException *exception) {
 
     return self;
 }
+
+#pragma mark - Messages
 
 - (void)captureMessage:(NSString *)message {
     [self captureMessage:message level:kRavenLogLevelDebugInfo];
@@ -129,6 +131,8 @@ void exceptionHandler(NSException *exception) {
 
     [self sendDictionary:data];
 }
+
+#pragma mark - Exceptions
 
 - (void)captureException:(NSException *)exception {
     NSLog(@"Exception!! %@", exception);
