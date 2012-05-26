@@ -40,13 +40,13 @@
     [self.tableView reloadData];
 }
 
-- (IBAction)sendEvent {
-    [self addStatus:@"Sending event..."];
+- (IBAction)sendMessage {
+    [self addStatus:@"Sending message..."];
     RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
 }
 
-- (IBAction)sendException {
-    [self addStatus:@"Sending exception..."];
+- (IBAction)generateException {
+    [self addStatus:@"Generating exception..."];
     [self performSelector:@selector(nonExistingSelector)];
 }
 

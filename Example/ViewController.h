@@ -13,7 +13,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (void)addStatus:(NSString *)status;
-- (IBAction)sendEvent;
-- (IBAction)sendException;
+- (IBAction)sendMessage;
+- (IBAction)generateException;
 
 @end
