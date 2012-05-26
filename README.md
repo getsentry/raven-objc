@@ -20,8 +20,16 @@ TODO
 
 ## Requirements
 
+### JSON
+raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html) for JSON files, if it is available. If your app targets a platform where this class is not available (iOS < 5.0) you can include one of the following JSON libraries to your project for raven-objc to automatically detect and use.
+
+* [JSONKit](https://github.com/johnezang/JSONKit)
+* [SBJson](https://stig.github.com/json-framework/)
+* [YAJL](https://lloyd.github.com/yajl/)
+* [NextiveJson](https://github.com/nextive/NextiveJson)
+
 ### ARC Support
-RemoteConfig requires ARC support and should run on iOS 4.0 and higher.
+raven-objc requires ARC support and should run on iOS 4.0 and higher. However, `RavenJSONUtilities.m` needs to be compiled with the `-fno-objc-arc` flag. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fno-objc-arc` for `RavenJSONUtilities.m`.
 
 
 ## Issues and questions
