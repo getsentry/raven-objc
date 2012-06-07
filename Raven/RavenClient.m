@@ -9,13 +9,15 @@
 #import "RavenClient.h"
 #import "RavenJSONUtilities.h"
 
-NSString * const kRavenLogLevelArray[] = {
+NSString *const kRavenLogLevelArray[] = {
     @"debug",
     @"info",
     @"warning",
     @"error",
     @"fatal"
 };
+
+NSString *const userDefaultsKey = @"nl.mixedCase.RavenClient.Exceptions";
 
 static RavenClient *sharedClient = nil;
 
@@ -126,7 +128,7 @@ void exceptionHandler(NSException *exception) {
                       [NSArray arrayWithObject:frame], @"frames", 
                       nil];
 
-        [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];    
+        [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];
     }
 
     [self sendDictionary:data];
@@ -135,12 +137,55 @@ void exceptionHandler(NSException *exception) {
 #pragma mark - Exceptions
 
 - (void)captureException:(NSException *)exception {
-    NSLog(@"Exception!! %@", exception);
-    // TODO...
+    NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
+
+    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
+                                 self.projectId, @"project",
+                                 [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
+                                 message, @"message",
+                                 kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
+                                 nil];
+
+    NSDictionary *exceptionDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   exception.name, @"type",
+                                   exception.reason, @"value",
+                                   nil];
+
+    NSDictionary *extraDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [exception callStackSymbols], @"CallStack",
+                                   nil];
+
+    [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
+    [data setObject:extraDict forKey:@"extra"];
+
+    // We can't send this exception to Sentry now, because the app is killed before the
+    // connection can be made. So, save it into NSUserDefaults.
+    NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+    if (reports != nil) {
+        NSMutableArray *reportsCopy = [reports mutableCopy];
+        [reportsCopy addObject:data];
+        [[NSUserDefaults standardUserDefaults] setObject:reportsCopy forKey:userDefaultsKey];
+    } else {
+        reports = [NSArray arrayWithObject:data];
+        [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setupExceptionHandler {
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+
+    // Process saved crash reports
+    NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+    if (reports != nil && [reports count]) {
+        for (NSDictionary *data in reports) {
+            [self sendDictionary:data];
+        }
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArray array] forKey:userDefaultsKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark - Private methods
@@ -226,7 +271,7 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Connection finished: %@", [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding]);
+    NSLog(@"JSON sent to Sentry");
 }
 
 @end
