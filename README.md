@@ -33,13 +33,13 @@ NSLog(@"I am your RavenClient singleton : %@", [RavenClient sharedClient]);
 ### Sending messages
 
 ```objective-c
-// Sending a message, does not include a stacktrace:
+// Sending a basic message (note, does not include a stacktrace):
 [[RavenClient sharedClient] captureMessage:@"TEST 1 2 3"];
 
-// Sending a message with the stacktrace:
+// Sending a message with another level and a stacktrace:
 [[RavenClient sharedClient] captureMessage:@"TEST 1 2 3" level:kRavenLogLevelDebugInfo method:__FUNCTION__ file:__FILE__ line:__LINE__];
 
-// Easier macro to send a message with the stacktrace:
+// Recommended macro to send a message with automatic stacktrace:
 RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
 
 ```
@@ -68,6 +68,8 @@ Or, capture a single exception:
 }
 ```
 
+*Note: exceptions will be sent the __next__ time the app is started.*
+
 
 ## Requirements
 
@@ -95,10 +97,6 @@ raven-objc is an open source project and your contribution is very much apprecia
 1. Check for [open issues](https://github.com/kevinrenskers/raven-objc/issues) or [open a fresh issue](https://github.com/kevinrenskers/raven-objc/issues/new) to start a discussion around a feature idea or a bug.
 2. Fork the [repository on Github](https://github.com/kevinrenskers/raven-objc) and make your changes.
 3. Make sure to add yourself to AUTHORS and send a pull request.
-
-
-## Credits
-TODO
 
 
 ## License
