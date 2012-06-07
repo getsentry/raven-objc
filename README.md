@@ -41,7 +41,6 @@ NSLog(@"I am your RavenClient singleton : %@", [RavenClient sharedClient]);
 
 // Recommended macro to send a message with automatic stacktrace:
 RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
-
 ```
 
 ### Handling exceptions
