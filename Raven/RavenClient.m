@@ -49,7 +49,7 @@ static RavenClient *sharedClient = nil;
 @synthesize receivedData = _receivedData;
 
 void exceptionHandler(NSException *exception) {
-	[[RavenClient sharedClient] captureException:exception];
+	[[RavenClient sharedClient] captureException:exception sendNow:NO];
 }
 
 #pragma mark - Setters and getters
@@ -137,7 +137,7 @@ void exceptionHandler(NSException *exception) {
 #pragma mark - Exceptions
 
 - (void)captureException:(NSException *)exception {
-    [self captureException:exception sendNow:NO];
+    [self captureException:exception sendNow:YES];
 }
 
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow {
