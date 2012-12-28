@@ -137,6 +137,10 @@ void exceptionHandler(NSException *exception) {
 #pragma mark - Exceptions
 
 - (void)captureException:(NSException *)exception {
+    [self captureException:exception sendNow:NO];
+}
+
+- (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow {
     NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
 
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -159,19 +163,22 @@ void exceptionHandler(NSException *exception) {
     [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
     [data setObject:extraDict forKey:@"extra"];
 
-    // We can't send this exception to Sentry now, because the app is killed before the
-    // connection can be made. So, save it into NSUserDefaults.
-    NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
-    if (reports != nil) {
-        NSMutableArray *reportsCopy = [reports mutableCopy];
-        [reportsCopy addObject:data];
-        [[NSUserDefaults standardUserDefaults] setObject:reportsCopy forKey:userDefaultsKey];
+    if (sendNow) {
+        // We can't send this exception to Sentry now, e.g. because the app is killed before the
+        // connection can be made. So, save it into NSUserDefaults.
+        NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+        if (reports != nil) {
+            NSMutableArray *reportsCopy = [reports mutableCopy];
+            [reportsCopy addObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reportsCopy forKey:userDefaultsKey];
+        } else {
+            reports = [NSArray arrayWithObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        reports = [NSArray arrayWithObject:data];
-        [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+        [self sendDictionary:data];
     }
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setupExceptionHandler {

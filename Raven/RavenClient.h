@@ -33,6 +33,7 @@ typedef enum {
 
 // Exceptions
 - (void)captureException:(NSException *)exception;
+- (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
 @end

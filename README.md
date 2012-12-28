@@ -63,11 +63,11 @@ Or, capture a single exception:
     [self performSelector:@selector(nonExistingSelector)];
 }
 @catch (NSException *exception) {
-    [[RavenClient sharedClient] captureException:exception];
+    [[RavenClient sharedClient] captureException:exception sendNow:YES];
 }
 ```
 
-*Note: exceptions will be sent the __next__ time the app is started.*
+*Note: by default, exceptions will be sent the __next__ time the app is started.*
 
 
 ## Requirements
