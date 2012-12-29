@@ -220,12 +220,14 @@ void exceptionHandler(NSException *exception) {
         path = [path stringByAppendingString:@"/"];
     }
 
+    NSString *host = [DSNURL host];
     NSNumber *port = [DSNURL port];
-    if (!port) {
-        port = [NSNumber numberWithInteger:80];
+    NSString *hostAndMaybeExplicitPort = host; // Awful name...
+    if ([DSNURL port]) {
+        hostAndMaybeExplicitPort = [NSString stringWithFormat:@"%@:%@", host, port];
     }
 
-    self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@api/store/", [DSNURL scheme], [DSNURL host], path]];
+    self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@api/store/", [DSNURL scheme], hostAndMaybeExplicitPort, path]];
     self.publicKey = [DSNURL user];
     self.secretKey = [DSNURL password];
 
