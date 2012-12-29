@@ -42,7 +42,7 @@
         }
     }
     
-    self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@/%@api/store/", [DSNURL scheme], [DSNURL host], port, path]];
+    self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@/%@api/%@/store/", [DSNURL scheme], [DSNURL host], port, self.projectId, path]];
     self.publicKey = [DSNURL user];
     self.secretKey = [DSNURL password];
     

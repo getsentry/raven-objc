@@ -22,10 +22,11 @@
 		0A46FEC9156FA72300D97F26 /* RavenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FEC8156FA72300D97F26 /* RavenTests.m */; };
 		0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		8BAEC131168E6D5800408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
-		8BAEC132168E6D5800408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 		8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC141168E725100408CDB /* RavenConfigTest.m */; };
+		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
+		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
+		8BAEC156168E748700408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -298,8 +299,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BAEC132168E6D5800408CDB /* RavenClient.m in Sources */,
-				8BAEC131168E6D5800408CDB /* RavenJSONUtilities.m in Sources */,
+				8BAEC154168E747900408CDB /* RavenClient.m in Sources */,
+				8BAEC156168E748700408CDB /* RavenConfig.m in Sources */,
+				8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */,
 				0A46FEC9156FA72300D97F26 /* RavenTests.m in Sources */,
 				8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */,
 			);
