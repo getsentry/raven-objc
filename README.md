@@ -67,7 +67,7 @@ Or, capture a single exception:
 }
 ```
 
-*Note: exceptions will be sent the __next__ time the app is started.*
+*Note: when using the global exception handler, exceptions will be sent the __next__ time the app is started.*
 
 
 ## Requirements
