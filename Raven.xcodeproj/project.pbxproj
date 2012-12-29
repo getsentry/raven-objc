@@ -24,7 +24,7 @@
 		0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 		8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC141168E725100408CDB /* RavenConfigTest.m */; };
-		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
+		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		8BAEC156168E748700408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 		8BF37C9A168E76A8003272D6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF37C99168E76A8003272D6 /* Default-568h@2x.png */; };
