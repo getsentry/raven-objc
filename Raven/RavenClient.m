@@ -144,7 +144,7 @@ void exceptionHandler(NSException *exception) {
     [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
     [data setObject:extraDict forKey:@"extra"];
 
-    if (sendNow) {
+    if (!sendNow) {
         // We can't send this exception to Sentry now, e.g. because the app is killed before the
         // connection can be made. So, save it into NSUserDefaults.
         NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
