@@ -87,7 +87,7 @@ void exceptionHandler(NSException *exception) {
 
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line {
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                          [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
+                          [self generateUUID], @"event_id",
                           self.config.projectId, @"project",
                           [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                           message, @"message",
@@ -182,7 +182,7 @@ void exceptionHandler(NSException *exception) {
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
-    return (__bridge NSString *)string;
+    return [(__bridge NSString *)string stringByReplacingOccurrencesOfString:@"-" withString:@""];
 }
 
 - (void)sendDictionary:(NSDictionary *)dict {

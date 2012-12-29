@@ -25,4 +25,11 @@
     [super tearDown];
 }
 
+- (void)testGenerateUUID
+{
+    RavenClient *client = [RavenClient alloc];
+    NSString *uuid = [client generateUUID];
+    STAssertEquals([uuid length], (NSUInteger)32, @"Invalid value for UUID returned: %@", uuid);
+}
+
 @end
