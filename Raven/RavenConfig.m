@@ -15,12 +15,14 @@
     
     NSMutableArray *pathComponents = [[DSNURL pathComponents] mutableCopy];
     if (![pathComponents count]) {
+        NSLog(@"Missing path");
         return NO;
     }
     
     [pathComponents removeObjectAtIndex:0]; // always remove the first slash
     
     self.projectId = [pathComponents lastObject]; // project id is the last element of the path
+
     if (!self.projectId) {
         return NO;
     }

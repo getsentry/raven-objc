@@ -60,9 +60,12 @@ void exceptionHandler(NSException *exception) {
 - (id)initWithDSN:(NSString *)DSN {
     self = [super init];
     if (self) {
+        // TODO: figure out how instance construction works
+        self.config = [RavenConfig alloc];
+        
         // Parse DSN
         if (![self.config setDSN:DSN]) {
-            NSLog(@"Invalid DSN!");
+            NSLog(@"Invalid DSN %@!", DSN);
             return nil;
         }
 
