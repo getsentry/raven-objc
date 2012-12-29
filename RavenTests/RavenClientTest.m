@@ -38,15 +38,22 @@
     STAssertEquals([uuid length], (NSUInteger)32, @"Invalid value for UUID returned: %@", uuid);
 }
 
-- (void)testCaptureMessage
+- (void)testCaptureMessageWithOnlyMessage
 {
     [self.client captureMessage:@"An example message"];
     NSDictionary *lastEvent = self.client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
     STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
-    STAssertTrue([keys containsObject:@"message"], @"Missing message: %@", lastEvent);
+    STAssertTrue([keys containsObject:@"message"], @"Missing message");
+    STAssertTrue([keys containsObject:@"project"], @"Missing project");
+    STAssertTrue([keys containsObject:@"level"], @"Missing level");
+    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
     STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
                  @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+                   @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
+    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"info"],
+                   @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
 }
 
 @end
