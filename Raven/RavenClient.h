@@ -24,6 +24,7 @@ typedef enum {
 // Singleton and initializers
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
 + (RavenClient *)sharedClient;
+
 - (id)initWithDSN:(NSString *)DSN;
 
 // Messages

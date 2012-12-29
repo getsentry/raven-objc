@@ -19,20 +19,16 @@
 		0A46FEBD156FA72300D97F26 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A46FE9D156FA72300D97F26 /* UIKit.framework */; };
 		0A46FEBE156FA72300D97F26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A46FE9F156FA72300D97F26 /* Foundation.framework */; };
 		0A46FEC6156FA72300D97F26 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A46FEC4156FA72300D97F26 /* InfoPlist.strings */; };
-		0A46FEC9156FA72300D97F26 /* RavenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FEC8156FA72300D97F26 /* RavenTests.m */; };
+		0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FEC8156FA72300D97F26 /* RavenClientTest.m */; };
 		0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
+		8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC141168E725100408CDB /* RavenConfigTest.m */; };
+		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
+		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
+		8BAEC156168E748700408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
+		8BF37C9A168E76A8003272D6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF37C99168E76A8003272D6 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0A46FEBF156FA72300D97F26 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0A46FE90156FA72300D97F26 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0A46FE98156FA72300D97F26;
-			remoteInfo = Raven;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0A33DE37156FA9D500AB3299 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
@@ -55,12 +51,18 @@
 		0A46FEBB156FA72300D97F26 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		0A46FEC3156FA72300D97F26 /* RavenTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RavenTests-Info.plist"; sourceTree = "<group>"; };
 		0A46FEC5156FA72300D97F26 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		0A46FEC7156FA72300D97F26 /* RavenTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RavenTests.h; sourceTree = "<group>"; };
-		0A46FEC8156FA72300D97F26 /* RavenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RavenTests.m; sourceTree = "<group>"; };
+		0A46FEC7156FA72300D97F26 /* RavenClientTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RavenClientTest.h; sourceTree = "<group>"; };
+		0A46FEC8156FA72300D97F26 /* RavenClientTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RavenClientTest.m; sourceTree = "<group>"; };
 		0A46FED8156FA8D900D97F26 /* RavenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient.h; sourceTree = "<group>"; };
 		0A46FED9156FA8D900D97F26 /* RavenClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenClient.m; sourceTree = "<group>"; };
-		0AB52B73157048CC002404B0 /* RavenJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; path = RavenJSONUtilities.h; sourceTree = "<group>"; };
+		0AB52B73157048CC002404B0 /* RavenJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenJSONUtilities.h; sourceTree = "<group>"; };
 		0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenJSONUtilities.m; sourceTree = "<group>"; };
+		8BAEC123168E6D0200408CDB /* RavenClient_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient_Private.h; sourceTree = "<group>"; };
+		8BAEC13C168E6FC100408CDB /* RavenConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenConfig.h; sourceTree = "<group>"; };
+		8BAEC13D168E6FC100408CDB /* RavenConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfig.m; sourceTree = "<group>"; };
+		8BAEC140168E725100408CDB /* RavenConfigTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenConfigTest.h; sourceTree = "<group>"; };
+		8BAEC141168E725100408CDB /* RavenConfigTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfigTest.m; sourceTree = "<group>"; };
+		8BF37C99168E76A8003272D6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 		0A46FE8E156FA72300D97F26 = {
 			isa = PBXGroup;
 			children = (
+				8BF37C99168E76A8003272D6 /* Default-568h@2x.png */,
 				0A46FED2156FA74700D97F26 /* Raven */,
 				0A46FEA3156FA72300D97F26 /* Example */,
 				0A46FEC1156FA72300D97F26 /* RavenTests */,
@@ -148,9 +151,11 @@
 		0A46FEC1156FA72300D97F26 /* RavenTests */ = {
 			isa = PBXGroup;
 			children = (
-				0A46FEC7156FA72300D97F26 /* RavenTests.h */,
-				0A46FEC8156FA72300D97F26 /* RavenTests.m */,
+				0A46FEC7156FA72300D97F26 /* RavenClientTest.h */,
+				0A46FEC8156FA72300D97F26 /* RavenClientTest.m */,
 				0A46FEC2156FA72300D97F26 /* Supporting Files */,
+				8BAEC140168E725100408CDB /* RavenConfigTest.h */,
+				8BAEC141168E725100408CDB /* RavenConfigTest.m */,
 			);
 			path = RavenTests;
 			sourceTree = "<group>";
@@ -171,6 +176,9 @@
 				0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */,
 				0A46FED8156FA8D900D97F26 /* RavenClient.h */,
 				0A46FED9156FA8D900D97F26 /* RavenClient.m */,
+				8BAEC123168E6D0200408CDB /* RavenClient_Private.h */,
+				8BAEC13C168E6FC100408CDB /* RavenConfig.h */,
+				8BAEC13D168E6FC100408CDB /* RavenConfig.m */,
 			);
 			path = Raven;
 			sourceTree = "<group>";
@@ -207,7 +215,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0A46FEC0156FA72300D97F26 /* PBXTargetDependency */,
 			);
 			name = RavenTests;
 			productName = RavenTests;
@@ -248,6 +255,7 @@
 			files = (
 				0A46FEA8156FA72300D97F26 /* InfoPlist.strings in Resources */,
 				0A46FEB1156FA72300D97F26 /* MainStoryboard.storyboard in Resources */,
+				8BF37C9A168E76A8003272D6 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +295,7 @@
 				0A46FEB4156FA72300D97F26 /* ViewController.m in Sources */,
 				0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */,
 				0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */,
+				8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,19 +303,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A46FEC9156FA72300D97F26 /* RavenTests.m in Sources */,
+				8BAEC154168E747900408CDB /* RavenClient.m in Sources */,
+				8BAEC156168E748700408CDB /* RavenConfig.m in Sources */,
+				8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */,
+				0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */,
+				8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0A46FEC0156FA72300D97F26 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0A46FE98156FA72300D97F26 /* RavenExample */;
-			targetProxy = 0A46FEBF156FA72300D97F26 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0A46FEA6156FA72300D97F26 /* InfoPlist.strings */ = {
@@ -358,6 +363,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -377,6 +383,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -386,7 +393,9 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Raven-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "Example/Raven-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -397,6 +406,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Raven-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "Example/Raven-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -406,15 +416,18 @@
 		0A46FED0156FA72300D97F26 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Raven.app/Raven";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Raven-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "RavenTests/RavenTests-Info.plist";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -423,15 +436,17 @@
 		0A46FED1156FA72300D97F26 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Raven.app/Raven";
+				BUNDLE_LOADER = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Example/Raven-Prefix.pch";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "RavenTests/RavenTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
