@@ -74,4 +74,26 @@
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
 }
 
+
+- (void)testCaptureMessageWithFullArgSpec
+{
+    [self.client captureMessage:@"An example message" level:kRavenLogLevelDebugWarning
+                         method:"method name" file:"filename" line:34];
+    NSDictionary *lastEvent = self.client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    STAssertTrue([keys containsObject:@"message"], @"Missing message");
+    STAssertTrue([keys containsObject:@"project"], @"Missing project");
+    STAssertTrue([keys containsObject:@"level"], @"Missing level");
+    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    STAssertTrue([keys containsObject:@"sentry.interfaces.Stacktrace"], @"Missing stacktrace");
+    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+                   @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+                   @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
+    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+                 @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
+}
+
 @end
