@@ -22,9 +22,9 @@
     STAssertTrue([config.secretKey isEqualToString:@"secret_key"], @"Got incorrect secretKey %@", config.secretKey);
     STAssertTrue([config.projectId isEqualToString:@"project-id"], @"Got incorrect projectId %@", config.projectId);
     
-    NSURL *expectedURL = [NSURL URLWithString:@"http://example.com:8000/project-id/api/store/"];
+    NSString *expectedURL = @"http://example.com:8000/api/project-id/store/";
     
-    STAssertEquals(config.serverURL, expectedURL, @"Got incorrect serverURL %@", [config.serverURL absoluteString]);
+    STAssertTrue([[config.serverURL absoluteString] isEqualToString:expectedURL], @"Got incorrect serverURL %@", [config.serverURL absoluteString]);
 }
 
 @end
