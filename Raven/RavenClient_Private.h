@@ -7,14 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RavenClient.h"
+#import "RavenConfig.h"
 
-@interface RavenClient : NSObject <NSURLConnectionDelegate>
+@interface RavenClient ()
 
-- (BOOL)parseDSN:(NSString *)DSN;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSMutableData *receivedData;
+@property (strong, nonatomic) RavenConfig *config;
 
-@property (strong, nonatomic) NSURL *serverURL;
-@property (strong, nonatomic) NSString *publicKey;
-@property (strong, nonatomic) NSString *secretKey;
-@property (strong, nonatomic) NSString *projectId;
+- (NSString *)generateUUID;
+- (void)sendDictionary:(NSDictionary *)dict;
+- (void)sendJSON:(NSData *)JSON;
 
 @end

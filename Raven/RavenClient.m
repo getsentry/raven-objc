@@ -7,6 +7,8 @@
 //
 
 #import "RavenClient.h"
+#import "RavenClient_Private.h"
+#import "RavenConfig.h"
 #import "RavenJSONUtilities.h"
 
 NSString *const kRavenLogLevelArray[] = {
@@ -21,31 +23,10 @@ NSString *const userDefaultsKey = @"nl.mixedCase.RavenClient.Exceptions";
 
 static RavenClient *sharedClient = nil;
 
-
-@interface RavenClient ()
-
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
-@property (strong, nonatomic) NSURL *serverURL;
-@property (strong, nonatomic) NSString *publicKey;
-@property (strong, nonatomic) NSString *secretKey;
-@property (strong, nonatomic) NSString *projectId;
-@property (strong, nonatomic) NSMutableData *receivedData;
-
-- (BOOL)parseDSN:(NSString *)DSN;
-- (NSString *)generateUUID;
-- (void)sendDictionary:(NSDictionary *)dict;
-- (void)sendJSON:(NSData *)JSON;
-
-@end
-
-
 @implementation RavenClient
 
 @synthesize dateFormatter = _dateFormatter;
-@synthesize serverURL = _serverURL;
-@synthesize publicKey = _publicKey;
-@synthesize secretKey = _secretKey;
-@synthesize projectId = _projectId;
+@synthesize config = _config;
 @synthesize receivedData = _receivedData;
 
 void exceptionHandler(NSException *exception) {
@@ -80,7 +61,7 @@ void exceptionHandler(NSException *exception) {
     self = [super init];
     if (self) {
         // Parse DSN
-        if (![self parseDSN:DSN]) {
+        if (![self.config setDSN:DSN]) {
             NSLog(@"Invalid DSN!");
             return nil;
         }
@@ -107,7 +88,7 @@ void exceptionHandler(NSException *exception) {
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line {
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                           [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
-                          self.projectId, @"project",
+                          self.config.projectId, @"project",
                           [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                           message, @"message",
                           kRavenLogLevelArray[level], @"level",
@@ -141,7 +122,7 @@ void exceptionHandler(NSException *exception) {
 
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
-                                 self.projectId, @"project",
+                                 self.config.projectId, @"project",
                                  [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                                  message, @"message",
                                  kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
@@ -190,41 +171,6 @@ void exceptionHandler(NSException *exception) {
 
 #pragma mark - Private methods
 
-- (BOOL)parseDSN:(NSString *)DSN {
-    NSURL *DSNURL = [NSURL URLWithString:DSN];
-
-    NSMutableArray *pathComponents = [[DSNURL pathComponents] mutableCopy];
-    if (![pathComponents count]) {
-        return NO;
-    }
-
-    [pathComponents removeObjectAtIndex:0]; // always remove the first slash
-
-    self.projectId = [pathComponents lastObject]; // project id is the last element of the path
-    if (!self.projectId) {
-        return NO;
-    }
-
-    [pathComponents removeLastObject]; // remove the project id...
-    NSString *path = [pathComponents componentsJoinedByString:@"/"]; // ...and construct the path again
-
-    // Add a slash to the end of the path if there is a path
-    if (![path isEqualToString:@""]) {
-        path = [path stringByAppendingString:@"/"];
-    }
-
-    NSNumber *port = [DSNURL port];
-    if (!port) {
-        port = [NSNumber numberWithInteger:80];
-    }
-
-    self.serverURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/%@api/store/", [DSNURL scheme], [DSNURL host], path]];
-    self.publicKey = [DSNURL user];
-    self.secretKey = [DSNURL password];
-
-    return YES;
-}
-
 - (NSString *)generateUUID {
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
@@ -240,9 +186,9 @@ void exceptionHandler(NSException *exception) {
 
 - (void)sendJSON:(NSData *)JSON {
     NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
-    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1, sentry_timestamp=%f, sentry_key=%@", timestamp, self.publicKey];
+    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1, sentry_timestamp=%f, sentry_key=%@", timestamp, self.config.publicKey];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.serverURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.config.serverURL];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
