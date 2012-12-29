@@ -125,7 +125,7 @@ void exceptionHandler(NSException *exception) {
     NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
 
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [[self generateUUID] stringByReplacingOccurrencesOfString:@"-" withString:@""], @"event_id",
+                                 [self generateUUID], @"event_id",
                                  self.config.projectId, @"project",
                                  [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                                  message, @"message",
