@@ -66,12 +66,15 @@
     STAssertTrue([keys containsObject:@"project"], @"Missing project");
     STAssertTrue([keys containsObject:@"level"], @"Missing level");
     STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
     STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
     STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
     STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
+    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+                   @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
 
@@ -86,7 +89,7 @@
     STAssertTrue([keys containsObject:@"project"], @"Missing project");
     STAssertTrue([keys containsObject:@"level"], @"Missing level");
     STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
-    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
     STAssertTrue([keys containsObject:@"sentry.interfaces.Stacktrace"], @"Missing stacktrace");
     STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
@@ -94,6 +97,8 @@
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
     STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
+    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+                   @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
 @end

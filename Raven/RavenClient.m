@@ -95,8 +95,10 @@ void exceptionHandler(NSException *exception) {
                           [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                           message, @"message",
                           kRavenLogLevelArray[level], @"level",
+                          @"objc", @"platform",
                           nil];
 
+    
     if (file) {
         [data setObject:[[NSString stringWithUTF8String:file] lastPathComponent] forKey:@"culprit"];
     }
@@ -133,6 +135,7 @@ void exceptionHandler(NSException *exception) {
                                  [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
                                  message, @"message",
                                  kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
+                                 @"objc", @"platform",
                                  nil];
 
     NSDictionary *exceptionDict = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -190,7 +193,10 @@ void exceptionHandler(NSException *exception) {
 
 - (void)sendDictionary:(NSDictionary *)dict {
     NSError *error = nil;
+
     NSData *JSON = JSONEncode(dict, &error);
+
+    
     [self sendJSON:JSON];
 }
 
