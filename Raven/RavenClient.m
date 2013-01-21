@@ -202,7 +202,7 @@ void exceptionHandler(NSException *exception) {
 
 - (void)sendJSON:(NSData *)JSON {
     NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
-    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1, sentry_timestamp=%f, sentry_key=%@", timestamp, self.config.publicKey];
+    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1.0, sentry_timestamp=%f, sentry_key=%@", timestamp, self.config.publicKey];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.config.serverURL];
     [request setHTTPMethod:@"POST"];
