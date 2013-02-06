@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1479A316C2958F00D3B69D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A1479A216C2958F00D3B69D /* Default-568h@2x.png */; };
 		0A46FE9E156FA72300D97F26 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A46FE9D156FA72300D97F26 /* UIKit.framework */; };
 		0A46FEA0156FA72300D97F26 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A46FE9F156FA72300D97F26 /* Foundation.framework */; };
 		0A46FEA2156FA72300D97F26 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A46FEA1156FA72300D97F26 /* CoreGraphics.framework */; };
@@ -27,10 +28,10 @@
 		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		8BAEC156168E748700408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
-		8BF37C9A168E76A8003272D6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8BF37C99168E76A8003272D6 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1479A216C2958F00D3B69D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		0A33DE37156FA9D500AB3299 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		0A33DE39156FAA0B00AB3299 /* AUTHORS */ = {isa = PBXFileReference; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		0A33DE3A156FAA0B00AB3299 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -62,7 +63,6 @@
 		8BAEC13D168E6FC100408CDB /* RavenConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfig.m; sourceTree = "<group>"; };
 		8BAEC140168E725100408CDB /* RavenConfigTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenConfigTest.h; sourceTree = "<group>"; };
 		8BAEC141168E725100408CDB /* RavenConfigTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfigTest.m; sourceTree = "<group>"; };
-		8BF37C99168E76A8003272D6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +92,6 @@
 		0A46FE8E156FA72300D97F26 = {
 			isa = PBXGroup;
 			children = (
-				8BF37C99168E76A8003272D6 /* Default-568h@2x.png */,
 				0A46FED2156FA74700D97F26 /* Raven */,
 				0A46FEA3156FA72300D97F26 /* Example */,
 				0A46FEC1156FA72300D97F26 /* RavenTests */,
@@ -140,6 +139,7 @@
 		0A46FEA4156FA72300D97F26 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0A1479A216C2958F00D3B69D /* Default-568h@2x.png */,
 				0A46FEA5156FA72300D97F26 /* Raven-Info.plist */,
 				0A46FEA6156FA72300D97F26 /* InfoPlist.strings */,
 				0A46FEA9156FA72300D97F26 /* main.m */,
@@ -255,7 +255,7 @@
 			files = (
 				0A46FEA8156FA72300D97F26 /* InfoPlist.strings in Resources */,
 				0A46FEB1156FA72300D97F26 /* MainStoryboard.storyboard in Resources */,
-				8BF37C9A168E76A8003272D6 /* Default-568h@2x.png in Resources */,
+				0A1479A316C2958F00D3B69D /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
