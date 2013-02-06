@@ -5,6 +5,14 @@ Objective-c client for [Sentry](https://www.getsentry.com/welcome/).
 
 ## Installation
 
+The easiest way is to use [CocoaPods](http://cocoapods.org). It takes care of all required frameworks and third party dependencies:
+
+```ruby
+pod 'Raven'
+```
+
+**Alternatively**, you can install manually.
+
 1. Get the code: `git clone git://github.com/getsentry/raven-objc`
 2. Drag the `Raven` subfolder to your project. Check both "copy items into destination group's folder" and your target.
 
