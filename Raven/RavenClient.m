@@ -188,7 +188,9 @@ void exceptionHandler(NSException *exception) {
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
-    return [(__bridge NSString *)string stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    NSString *res = [(__bridge NSString *)string stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    CFRelease(string);
+    return res;
 }
 
 - (void)sendDictionary:(NSDictionary *)dict {
