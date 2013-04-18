@@ -23,7 +23,7 @@
 #import "RavenJSONUtilities.h"
 
 NSData * JSONEncode(id object, NSError **error) {
-    NSData *data = nil;
+    __unsafe_unretained NSData *data = nil;
     
     SEL _JSONKitSelector = NSSelectorFromString(@"JSONDataWithOptions:error:"); 
     SEL _YAJLSelector = NSSelectorFromString(@"yajl_JSONString");
@@ -45,7 +45,7 @@ NSData * JSONEncode(id object, NSError **error) {
         NSUInteger serializeOptionFlags = 0;
         [invocation setArgument:&serializeOptionFlags atIndex:2]; // arguments 0 and 1 are self and _cmd respectively, automatically set by NSInvocation
         if (error != NULL) {
-            [invocation setArgument:error atIndex:3];
+            [invocation setArgument:&error atIndex:3];
         }
         
         [invocation invoke];
@@ -60,10 +60,9 @@ NSData * JSONEncode(id object, NSError **error) {
         
         [invocation invoke];
         [invocation getReturnValue:&data];
-        [writer release];
     } else if (_YAJLSelector && [object respondsToSelector:_YAJLSelector]) {
         @try {
-            NSString *JSONString = nil;
+            __unsafe_unretained NSString *JSONString = nil;
             NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[object methodSignatureForSelector:_YAJLSelector]];
             invocation.target = object;
             invocation.selector = _YAJLSelector;
@@ -74,10 +73,10 @@ NSData * JSONEncode(id object, NSError **error) {
             data = [JSONString dataUsingEncoding:NSUTF8StringEncoding];
         }
         @catch (NSException *exception) {
-            *error = [[[NSError alloc] initWithDomain:NSStringFromClass([exception class]) code:0 userInfo:[exception userInfo]] autorelease];
+            *error = [[NSError alloc] initWithDomain:NSStringFromClass([exception class]) code:0 userInfo:[exception userInfo]];
         }
     } else if (_NXJsonSerializerClass && [_NXJsonSerializerClass respondsToSelector:_NXJsonSerializerSelector]) {
-        NSString *JSONString = nil;
+        __unsafe_unretained NSString *JSONString = nil;
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[_NXJsonSerializerClass methodSignatureForSelector:_NXJsonSerializerSelector]];
         invocation.target = _NXJsonSerializerClass;
         invocation.selector = _NXJsonSerializerSelector;
@@ -96,7 +95,7 @@ NSData * JSONEncode(id object, NSError **error) {
         NSUInteger writeOptions = 0;
         [invocation setArgument:&writeOptions atIndex:3];
         if (error != NULL) {
-            [invocation setArgument:error atIndex:4];
+            [invocation setArgument:&error atIndex:4];
         }
 
         [invocation invoke];
@@ -110,7 +109,7 @@ NSData * JSONEncode(id object, NSError **error) {
 }
 
 id JSONDecode(NSData *data, NSError **error) {    
-    id JSON = nil;
+    __unsafe_unretained id JSON = nil;
     
     SEL _JSONKitSelector = NSSelectorFromString(@"objectFromJSONDataWithParseOptions:error:"); 
     SEL _YAJLSelector = NSSelectorFromString(@"yajl_JSONWithOptions:error:");
@@ -147,7 +146,6 @@ id JSONDecode(NSData *data, NSError **error) {
 
         [invocation invoke];
         [invocation getReturnValue:&JSON];
-        [parser release];
     } else if (_YAJLSelector && [data respondsToSelector:_YAJLSelector]) {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[data methodSignatureForSelector:_YAJLSelector]];
         invocation.target = data;
