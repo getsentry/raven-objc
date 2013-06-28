@@ -93,7 +93,7 @@ raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#
 
 ### ARC Support
 
-raven-objc requires ARC support and should run on iOS 4.0 and higher. However, `RavenJSONUtilities.m` needs to be compiled with the `-fno-objc-arc` flag. To do this in Xcode, go to your active target and select the "Build Phases" tab. In the "Compiler Flags" column, set `-fno-objc-arc` for `RavenJSONUtilities.m`.
+raven-objc requires ARC support and should run on iOS 4.0 and higher.
 
 ## Issues and questions
 
