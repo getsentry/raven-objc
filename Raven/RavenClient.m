@@ -25,10 +25,6 @@ static RavenClient *sharedClient = nil;
 
 @implementation RavenClient
 
-@synthesize dateFormatter = _dateFormatter;
-@synthesize config = _config;
-@synthesize receivedData = _receivedData;
-
 void exceptionHandler(NSException *exception) {
 	[[RavenClient sharedClient] captureException:exception sendNow:NO];
 }
@@ -60,8 +56,7 @@ void exceptionHandler(NSException *exception) {
 - (id)initWithDSN:(NSString *)DSN {
     self = [super init];
     if (self) {
-        // TODO: figure out how instance construction works
-        self.config = [RavenConfig alloc];
+        self.config = [[RavenConfig alloc] init];
         
         // Parse DSN
         if (![self.config setDSN:DSN]) {
@@ -197,8 +192,6 @@ void exceptionHandler(NSException *exception) {
     NSError *error = nil;
 
     NSData *JSON = JSONEncode(dict, &error);
-
-    
     [self sendJSON:JSON];
 }
 
