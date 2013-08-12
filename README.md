@@ -93,13 +93,13 @@ raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#
 
 ### ARC Support
 
-raven-objc requires ARC support and should run on iOS 4.0 and higher.
+raven-objc requires ARC support and should run on iOS 4.0 and Mac OS X 10.6.
 
 ## Issues and questions
 
 Have a bug? Please create an issue on GitHub!
 
-https://github.com/kevinrenskers/raven-objc/issues
+https://github.com/getsentry/raven-objc/issues
 
 
 ## Contributing

@@ -6,7 +6,6 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "David Cramer" => "dcramer@gmail.com" }
   s.source       = { :git => "https://github.com/getsentry/raven-objc.git", :tag => "0.1.0" }
-  s.platform     = :ios
   s.source_files = ['Raven']
   s.requires_arc = true
 end
