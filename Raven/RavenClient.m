@@ -141,6 +141,43 @@ void exceptionHandler(NSException *exception) {
     NSDictionary *extraDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                    [exception callStackSymbols], @"CallStack",
                                    nil];
+                                   
+    NSString *buildVersion;
+    NSString *osVersion;
+    NSString *sudonym;
+    
+    @try {
+        
+        // Grab Build Version
+        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        
+        buildVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+        
+        // Grab OS Version
+        osVersion = [[UIDevice currentDevice] systemVersion];
+        
+        // Grab sudonym
+        Keychain *keychain = [Keychain sharedInstance];
+        sudonym = [keychain retrieveSudonymID];
+        
+        
+    }
+    @catch(NSException *e)
+    {
+        if(!buildVersion)
+            buildVersion = @"N/A";
+        if(!osVersion)
+            osVersion = @"N/A";
+        if(!sudonym)
+            sudonym = @"N/A";
+    }
+    
+    NSDictionary *extraDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [exception callStackSymbols], @"CallStack",
+                               buildVersion, @"Build_Version",
+                               osVersion, @"OS_Version",
+                               sudonym, @"Sudonym",
+                               nil];
 
     [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
     [data setObject:extraDict forKey:@"extra"];
