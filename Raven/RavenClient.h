@@ -25,7 +25,7 @@ typedef enum {
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
 + (RavenClient *)sharedClient;
 
-- (id)initWithDSN:(NSString *)DSN tags:(NSDictionary *)tags;
+- (id)initWithDSN:(NSString *)DSN;
 
 // Messages
 - (void)captureMessage:(NSString *)message;
