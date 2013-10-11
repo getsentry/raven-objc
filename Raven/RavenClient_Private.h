@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableData *receivedData;
 @property (strong, nonatomic) RavenConfig *config;
+@property (strong, nonatomic) NSDictionary *tags;
 
 - (NSString *)generateUUID;
 - (void)sendDictionary:(NSDictionary *)dict;
