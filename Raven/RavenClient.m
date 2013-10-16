@@ -10,6 +10,7 @@
 #import "RavenClient_Private.h"
 #import "RavenConfig.h"
 #import "RavenJSONUtilities.h"
+#import <sys/utsname.h>
 
 NSString *const kRavenLogLevelArray[] = {
     @"debug",
@@ -57,6 +58,8 @@ void exceptionHandler(NSException *exception) {
     self = [super init];
     if (self) {
         self.config = [[RavenConfig alloc] init];
+      
+        [self setDefaultTags];
         
         // Parse DSN
         if (![self.config setDSN:DSN]) {
@@ -71,6 +74,44 @@ void exceptionHandler(NSException *exception) {
     }
 
     return self;
+}
+
+- (void)setDefaultTags {
+    NSString *buildVersion;
+    NSString *osVersion;
+    NSString *deviceModel;
+  
+    @try {
+        // Grab Build Version
+        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+        
+        buildVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    
+        // Grab OS Version
+        osVersion = [[UIDevice currentDevice] systemVersion];
+    
+        struct utsname systemInfo;
+        uname(&systemInfo);
+        deviceModel = [NSString stringWithCString:systemInfo.machine
+                              encoding:NSUTF8StringEncoding];
+    }
+    @catch(NSException *e)
+    {
+        if (!buildVersion)
+            buildVersion = @"N/A";
+        if (!osVersion)
+            osVersion = @"N/A";
+        if (!deviceModel)
+            deviceModel = @"N/A";
+    }
+  
+    NSDictionary *tags = [NSDictionary dictionaryWithObjectsAndKeys:
+      buildVersion, @"Build Version",
+      osVersion, @"OS Version",
+      deviceModel, @"Device Model",
+      nil];
+
+  [self setTags:tags];
 }
 
 #pragma mark - Messages
@@ -111,6 +152,10 @@ void exceptionHandler(NSException *exception) {
 
         [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];
     }
+  
+    if (self.tags) {
+        [data setObject:self.tags forKey:@"tags"];
+    }
 
     [self sendDictionary:data];
 }
@@ -144,6 +189,10 @@ void exceptionHandler(NSException *exception) {
 
     [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
     [data setObject:extraDict forKey:@"extra"];
+
+    if (self.tags) {
+        [data setObject:self.tags forKey:@"tags"];
+    }
 
     if (!sendNow) {
         // We can't send this exception to Sentry now, e.g. because the app is killed before the
