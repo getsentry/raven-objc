@@ -17,6 +17,11 @@
 @property (strong, nonatomic) RavenConfig *config;
 
 - (NSString *)generateUUID;
+- (NSDictionary *)prepareDictionaryForMessage:(NSString *)message
+                                        level:(RavenLogLevel)level
+                                      culprit:(NSString *)culprit
+                                   stacktrace:(NSArray *)stacktrace
+                                    exception:(NSDictionary *)exceptionDict;
 - (void)sendDictionary:(NSDictionary *)dict;
 - (void)sendJSON:(NSData *)JSON;
 

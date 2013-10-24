@@ -56,14 +56,14 @@ void exceptionHandler(NSException *exception) {
     }
     if (![mTags objectForKey:@"OS version"]) {
         NSString *osVersion = [[UIDevice currentDevice] systemVersion];
-        [mTags setObject:osVersion forKey:@"Build version"];
+        [mTags setObject:osVersion forKey:@"OS version"];
     }
     if (![mTags objectForKey:@"Device model"]) {
         struct utsname systemInfo;
         uname(&systemInfo);
         NSString *deviceModel = [NSString stringWithCString:systemInfo.machine
                                                    encoding:NSUTF8StringEncoding];
-        [mTags setObject:deviceModel forKey:@"Build version"];
+        [mTags setObject:deviceModel forKey:@"Device model"];
     }
 
     _tags = mTags;
@@ -73,13 +73,15 @@ void exceptionHandler(NSException *exception) {
 #pragma mark - Singleton and initializers
 
 + (RavenClient *)clientWithDSN:(NSString *)DSN {
-    RavenClient *client = [[self alloc] initWithDSN:DSN];
-    return client;
+    return [[self alloc] initWithDSN:DSN];
 }
 
-+ (RavenClient *)clientWithDSN:(NSString *)DSN andTags:(NSDictionary *)tags {
-    RavenClient *client = [[self alloc] initWithDSN:DSN andTags:tags];
-    return client;
++ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra {
+    return [[self alloc] initWithDSN:DSN extra:extra];
+}
+
++ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
+    return [[self alloc] initWithDSN:DSN extra:extra tags:tags];
 }
 
 + (RavenClient *)sharedClient {
@@ -87,15 +89,20 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (id)initWithDSN:(NSString *)DSN {
-    return [self initWithDSN:DSN andTags:@{}];
+    return [self initWithDSN:DSN extra:@{}];
 }
 
-- (id)initWithDSN:(NSString *)DSN andTags:(NSDictionary *)tags {
+- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra {
+    return [self initWithDSN:DSN extra:extra tags:@{}];
+}
+
+- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
     self = [super init];
     if (self) {
         self.config = [[RavenConfig alloc] init];
+        self.extra = extra;
         self.tags = tags;
-        
+
         // Parse DSN
         if (![self.config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
@@ -122,37 +129,22 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line {
-    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                          [self generateUUID], @"event_id",
-                          self.config.projectId, @"project",
-                          [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
-                          message, @"message",
-                          kRavenLogLevelArray[level], @"level",
-                          @"objc", @"platform",
-                          nil];
-
-    
-    if (file) {
-        [data setObject:[[NSString stringWithUTF8String:file] lastPathComponent] forKey:@"culprit"];
-    }
-
+    NSArray *stacktrace;
     if (method && file && line) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [[NSString stringWithUTF8String:file] lastPathComponent], @"filename", 
-                               [NSString stringWithUTF8String:method], @"function", 
-                               [NSNumber numberWithInt:line], @"lineno", 
+                               [[NSString stringWithUTF8String:file] lastPathComponent], @"filename",
+                               [NSString stringWithUTF8String:method], @"function",
+                               [NSNumber numberWithInt:line], @"lineno",
                                nil];
 
-        NSDictionary *stacktrace = [NSDictionary dictionaryWithObjectsAndKeys:
-                      [NSArray arrayWithObject:frame], @"frames", 
-                      nil];
-
-        [data setObject:stacktrace forKey:@"stacktrace"];
+        stacktrace = [NSArray arrayWithObject:frame];
     }
 
-    if (self.tags) {
-        [data setObject:self.tags forKey:@"tags"];
-    }
+    NSDictionary *data = [self prepareDictionaryForMessage:message
+                                                     level:level
+                                                   culprit:file ? [NSString stringWithUTF8String:file] : nil
+                                                stacktrace:stacktrace
+                                                 exception:nil];
 
     [self sendDictionary:data];
 }
@@ -172,27 +164,16 @@ void exceptionHandler(NSException *exception) {
                                    nil];
 
     NSArray *callStack = [exception callStackSymbols];
-    NSMutableArray *frames = [[NSMutableArray alloc] initWithCapacity:[callStack count]];
+    NSMutableArray *stacktrace = [[NSMutableArray alloc] initWithCapacity:[callStack count]];
     for (NSString *call in callStack) {
-        [frames addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                           call, @"function",
-                           nil]];
+        [stacktrace addObject:[NSDictionary dictionaryWithObjectsAndKeys:call, @"function", nil]];
     }
-    NSDictionary *stacktrace = [NSDictionary dictionaryWithObjectsAndKeys:
-                                frames, @"frames",
-                                nil];
 
-    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [self generateUUID], @"event_id",
-                          self.config.projectId, @"project",
-                          [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
-                          message, @"message",
-                          kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
-                          @"objc", @"platform",
-                          self.tags, @"tags",
-                          exceptionDict, @"exception",
-                          stacktrace, @"stacktrace",
-                          nil];
+    NSDictionary *data = [self prepareDictionaryForMessage:message
+                                                     level:kRavenLogLevelDebugFatal
+                                                   culprit:nil
+                                                stacktrace:stacktrace
+                                                 exception:exceptionDict];
 
     if (!sendNow) {
         // We can't send this exception to Sentry now, e.g. because the app is killed before the
@@ -237,19 +218,44 @@ void exceptionHandler(NSException *exception) {
     return res;
 }
 
+- (NSDictionary *)prepareDictionaryForMessage:(NSString *)message
+                                        level:(RavenLogLevel)level
+                                      culprit:(NSString *)culprit
+                                   stacktrace:(NSArray *)stacktrace
+                                    exception:(NSDictionary *)exceptionDict {
+    NSDictionary *stacktraceDict = [NSDictionary dictionaryWithObjectsAndKeys:stacktrace, @"frames", nil];
+
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            [self generateUUID], @"event_id",
+            self.config.projectId, @"project",
+            [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
+            kRavenLogLevelArray[level], @"level",
+            @"objc", @"platform",
+
+            self.extra, @"extra",
+            self.tags, @"tags",
+
+            message, @"message",
+            culprit ?: @"", @"culprit",
+            stacktraceDict, @"stacktrace",
+            exceptionDict, @"exception",
+            nil];
+}
+
 - (void)sendDictionary:(NSDictionary *)dict {
     NSError *error = nil;
-
+    
     NSData *JSON = JSONEncode(dict, &error);
     [self sendJSON:JSON];
 }
 
 - (void)sendJSON:(NSData *)JSON {
-    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%f, sentry_key=%@",
+    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%d, sentry_key=%@, sentry_secret=%@",
                         sentryProtocol,
                         sentryClient,
-                        [NSDate timeIntervalSinceReferenceDate],
-                        self.config.publicKey];
+                        (NSInteger)[NSDate timeIntervalSinceReferenceDate],
+                        self.config.publicKey,
+                        self.config.secretKey];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.config.serverURL];
     [request setHTTPMethod:@"POST"];
