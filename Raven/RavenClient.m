@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Gangverk. All rights reserved.
 //
 
+#import <sys/utsname.h>
 #import "RavenClient.h"
 #import "RavenClient_Private.h"
 #import "RavenConfig.h"
@@ -42,10 +43,40 @@ void exceptionHandler(NSException *exception) {
     return _dateFormatter;
 }
 
+- (void)setTags:(NSDictionary *)tags {
+    NSMutableDictionary *mTags = [[NSMutableDictionary alloc] initWithDictionary:tags];
+
+    if (![mTags objectForKey:@"Build version"]) {
+        NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        if (buildVersion) {
+            [mTags setObject:buildVersion forKey:@"Build version"];
+        }
+    }
+    if (![mTags objectForKey:@"OS version"]) {
+        NSString *osVersion = [[UIDevice currentDevice] systemVersion];
+        [mTags setObject:osVersion forKey:@"Build version"];
+    }
+    if (![mTags objectForKey:@"Device model"]) {
+        struct utsname systemInfo;
+        uname(&systemInfo);
+        NSString *deviceModel = [NSString stringWithCString:systemInfo.machine
+                                                   encoding:NSUTF8StringEncoding];
+        [mTags setObject:deviceModel forKey:@"Build version"];
+    }
+
+    _tags = mTags;
+}
+
+
 #pragma mark - Singleton and initializers
 
 + (RavenClient *)clientWithDSN:(NSString *)DSN {
     RavenClient *client = [[self alloc] initWithDSN:DSN];
+    return client;
+}
+
++ (RavenClient *)clientWithDSN:(NSString *)DSN andTags:(NSDictionary *)tags {
+    RavenClient *client = [[self alloc] initWithDSN:DSN andTags:tags];
     return client;
 }
 
@@ -54,9 +85,14 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (id)initWithDSN:(NSString *)DSN {
+    return [self initWithDSN:DSN andTags:@{}];
+}
+
+- (id)initWithDSN:(NSString *)DSN andTags:(NSDictionary *)tags {
     self = [super init];
     if (self) {
         self.config = [[RavenConfig alloc] init];
+        self.tags = tags;
         
         // Parse DSN
         if (![self.config setDSN:DSN]) {
@@ -112,6 +148,10 @@ void exceptionHandler(NSException *exception) {
         [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];
     }
 
+    if (self.tags) {
+        [data setObject:self.tags forKey:@"tags"];
+    }
+
     [self sendDictionary:data];
 }
 
@@ -144,6 +184,10 @@ void exceptionHandler(NSException *exception) {
 
     [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
     [data setObject:extraDict forKey:@"extra"];
+
+    if (self.tags) {
+        [data setObject:self.tags forKey:@"tags"];
+    }
 
     if (!sendNow) {
         // We can't send this exception to Sentry now, e.g. because the app is killed before the
