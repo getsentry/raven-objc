@@ -90,7 +90,7 @@
     STAssertTrue([keys containsObject:@"level"], @"Missing level");
     STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
     STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
-    STAssertTrue([keys containsObject:@"sentry.interfaces.Stacktrace"], @"Missing stacktrace");
+    STAssertTrue([keys containsObject:@"stacktrace"], @"Missing stacktrace");
     STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
     STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,

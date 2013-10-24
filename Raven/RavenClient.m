@@ -21,6 +21,8 @@ NSString *const kRavenLogLevelArray[] = {
 };
 
 NSString *const userDefaultsKey = @"nl.mixedCase.RavenClient.Exceptions";
+NSString *const sentryProtocol = @"4";
+NSString *const sentryClient = @"raven-objc/0.1.0";
 
 static RavenClient *sharedClient = nil;
 
@@ -145,7 +147,7 @@ void exceptionHandler(NSException *exception) {
                       [NSArray arrayWithObject:frame], @"frames", 
                       nil];
 
-        [data setObject:stacktrace forKey:@"sentry.interfaces.Stacktrace"];
+        [data setObject:stacktrace forKey:@"stacktrace"];
     }
 
     if (self.tags) {
@@ -164,30 +166,33 @@ void exceptionHandler(NSException *exception) {
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow {
     NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
 
-    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 [self generateUUID], @"event_id",
-                                 self.config.projectId, @"project",
-                                 [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
-                                 message, @"message",
-                                 kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
-                                 @"objc", @"platform",
-                                 nil];
-
     NSDictionary *exceptionDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                    exception.name, @"type",
                                    exception.reason, @"value",
                                    nil];
 
-    NSDictionary *extraDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   [exception callStackSymbols], @"CallStack",
-                                   nil];
-
-    [data setObject:exceptionDict forKey:@"sentry.interfaces.Exception"];
-    [data setObject:extraDict forKey:@"extra"];
-
-    if (self.tags) {
-        [data setObject:self.tags forKey:@"tags"];
+    NSArray *callStack = [exception callStackSymbols];
+    NSMutableArray *frames = [[NSMutableArray alloc] initWithCapacity:[callStack count]];
+    for (NSString *call in callStack) {
+        [frames addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                           call, @"function",
+                           nil]];
     }
+    NSDictionary *stacktrace = [NSDictionary dictionaryWithObjectsAndKeys:
+                                frames, @"frames",
+                                nil];
+
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [self generateUUID], @"event_id",
+                          self.config.projectId, @"project",
+                          [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
+                          message, @"message",
+                          kRavenLogLevelArray[kRavenLogLevelDebugFatal], @"level",
+                          @"objc", @"platform",
+                          self.tags, @"tags",
+                          exceptionDict, @"exception",
+                          stacktrace, @"stacktrace",
+                          nil];
 
     if (!sendNow) {
         // We can't send this exception to Sentry now, e.g. because the app is killed before the
@@ -240,8 +245,11 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendJSON:(NSData *)JSON {
-    NSTimeInterval timestamp = [NSDate timeIntervalSinceReferenceDate];
-    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=2.0, sentry_client=raven-objc/0.1.0, sentry_timestamp=%f, sentry_key=%@", timestamp, self.config.publicKey];
+    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%f, sentry_key=%@",
+                        sentryProtocol,
+                        sentryClient,
+                        [NSDate timeIntervalSinceReferenceDate],
+                        self.config.publicKey];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.config.serverURL];
     [request setHTTPMethod:@"POST"];
