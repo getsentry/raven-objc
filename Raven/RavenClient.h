@@ -21,11 +21,18 @@ typedef enum {
 
 @interface RavenClient : NSObject <NSURLConnectionDelegate>
 
+@property (strong, nonatomic) NSDictionary *extra;
+@property (strong, nonatomic) NSDictionary *tags;
+
 // Singleton and initializers
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
++ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
++ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
 + (RavenClient *)sharedClient;
 
 - (id)initWithDSN:(NSString *)DSN;
+- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
+- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
 
 // Messages
 - (void)captureMessage:(NSString *)message;

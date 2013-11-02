@@ -8,6 +8,8 @@
 
 #import "RavenClientTest.h"
 
+NSString *const testDSN = @"http://public:secret@example.com/foo";
+
 @implementation MockRavenClient
 
 - (void)sendDictionary:(NSDictionary *)dict
@@ -24,7 +26,7 @@
 {
     [super setUp];
 
-    self.client = [[MockRavenClient alloc] initWithDSN:@"http://public:secret@example.com/foo"];
+    self.client = [[MockRavenClient alloc] initWithDSN:testDSN];
 }
 
 - (void)tearDown
@@ -90,7 +92,7 @@
     STAssertTrue([keys containsObject:@"level"], @"Missing level");
     STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
     STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
-    STAssertTrue([keys containsObject:@"sentry.interfaces.Stacktrace"], @"Missing stacktrace");
+    STAssertTrue([keys containsObject:@"stacktrace"], @"Missing stacktrace");
     STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
     STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
@@ -99,6 +101,26 @@
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
     STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
+}
+
+- (void)testClientWithExtraAndTags
+{
+    NSDictionary *extra = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+    NSDictionary *tags = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN extra:extra tags:tags];
+    [client captureMessage:@"An example message"];
+
+    NSDictionary *lastEvent = client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+
+    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+    STAssertEquals([[lastEvent objectForKey:@"extra"] objectForKey:@"key"], @"value", @"Missing extra data");
+    STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key"], @"value", @"Missing tags data");
+
+    STAssertNotNil([[lastEvent objectForKey:@"tags"] objectForKey:@"OS version"], @"Missing tags data");
+    STAssertNotNil([[lastEvent objectForKey:@"tags"] objectForKey:@"Device model"], @"Missing tags data");
 }
 
 @end
