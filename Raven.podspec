@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Raven"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "A client for Sentry (getsentry.com)."
   s.homepage     = "https://getsentry.com/"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
