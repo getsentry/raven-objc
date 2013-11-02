@@ -54,10 +54,13 @@ void exceptionHandler(NSException *exception) {
             [mTags setObject:buildVersion forKey:@"Build version"];
         }
     }
+
+#if TARGET_OS_IPHONE
     if (![mTags objectForKey:@"OS version"]) {
         NSString *osVersion = [[UIDevice currentDevice] systemVersion];
         [mTags setObject:osVersion forKey:@"OS version"];
     }
+
     if (![mTags objectForKey:@"Device model"]) {
         struct utsname systemInfo;
         uname(&systemInfo);
@@ -65,10 +68,10 @@ void exceptionHandler(NSException *exception) {
                                                    encoding:NSUTF8StringEncoding];
         [mTags setObject:deviceModel forKey:@"Device model"];
     }
+#endif
 
     _tags = mTags;
 }
-
 
 #pragma mark - Singleton and initializers
 
