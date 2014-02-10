@@ -45,7 +45,8 @@ typedef enum {
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags;
 
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
        additionalExtra:(NSDictionary *)additionalExtra
         additionalTags:(NSDictionary *)additionalTags
                 method:(const char *)method
