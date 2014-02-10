@@ -132,6 +132,24 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line {
+
+    [self captureMessage:message level:level additionalExtra:nil additionalTags:nil method:method file:file line:line];
+}
+
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags {
+    [self captureMessage:message level:level additionalExtra:additionalExtra additionalTags:additionalTags method:nil file:nil line:0];
+}
+
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags
+                method:(const char *)method
+                  file:(const char *)file
+                  line:(NSInteger)line {
     NSArray *stacktrace;
     if (method && file && line) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -145,6 +163,8 @@ void exceptionHandler(NSException *exception) {
 
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:level
+                                           additionalExtra:additionalExtra
+                                            additionalTags:additionalTags
                                                    culprit:file ? [NSString stringWithUTF8String:file] : nil
                                                 stacktrace:stacktrace
                                                  exception:nil];
@@ -174,6 +194,8 @@ void exceptionHandler(NSException *exception) {
 
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:kRavenLogLevelDebugFatal
+                                           additionalExtra:nil
+                                            additionalTags:nil
                                                    culprit:nil
                                                 stacktrace:stacktrace
                                                  exception:exceptionDict];
@@ -223,10 +245,22 @@ void exceptionHandler(NSException *exception) {
 
 - (NSDictionary *)prepareDictionaryForMessage:(NSString *)message
                                         level:(RavenLogLevel)level
+                              additionalExtra:(NSDictionary *)additionalExtra
+                               additionalTags:(NSDictionary *)additionalTags
                                       culprit:(NSString *)culprit
                                    stacktrace:(NSArray *)stacktrace
                                     exception:(NSDictionary *)exceptionDict {
     NSDictionary *stacktraceDict = [NSDictionary dictionaryWithObjectsAndKeys:stacktrace, @"frames", nil];
+
+    NSMutableDictionary *extra = [NSMutableDictionary dictionaryWithDictionary:self.extra];
+    if (additionalExtra.count) {
+        [extra addEntriesFromDictionary:additionalExtra];
+    }
+
+    NSMutableDictionary *tags = [NSMutableDictionary dictionaryWithDictionary:self.tags];
+    if (additionalTags.count) {
+        [tags addEntriesFromDictionary:additionalTags];
+    }
 
     return [NSDictionary dictionaryWithObjectsAndKeys:
             [self generateUUID], @"event_id",
@@ -235,8 +269,8 @@ void exceptionHandler(NSException *exception) {
             kRavenLogLevelArray[level], @"level",
             @"objc", @"platform",
 
-            self.extra, @"extra",
-            self.tags, @"tags",
+            extra, @"extra",
+            tags, @"tags",
 
             message, @"message",
             culprit ?: @"", @"culprit",
