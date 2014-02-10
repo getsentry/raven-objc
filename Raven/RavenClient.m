@@ -136,10 +136,7 @@ void exceptionHandler(NSException *exception) {
     [self captureMessage:message level:level additionalExtra:nil additionalTags:nil method:method file:file line:line];
 }
 
-- (void)captureMessage:(NSString *)message
-                 level:(RavenLogLevel)level
-       additionalExtra:(NSDictionary *)additionalExtra
-        additionalTags:(NSDictionary *)additionalTags {
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags {
     [self captureMessage:message level:level additionalExtra:additionalExtra additionalTags:additionalTags method:nil file:nil line:0];
 }
 
@@ -179,6 +176,10 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow {
+   [self captureException:exception additionalExtra:nil additionalTags:nil sendNow:sendNow];
+}
+
+- (void)captureException:(NSException *)exception additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags sendNow:(BOOL)sendNow {
     NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
 
     NSDictionary *exceptionDict = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -194,8 +195,8 @@ void exceptionHandler(NSException *exception) {
 
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:kRavenLogLevelDebugFatal
-                                           additionalExtra:nil
-                                            additionalTags:nil
+                                           additionalExtra:additionalExtra
+                                            additionalTags:additionalTags
                                                    culprit:nil
                                                 stacktrace:stacktrace
                                                  exception:exceptionDict];

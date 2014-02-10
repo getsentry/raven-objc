@@ -35,21 +35,17 @@ typedef enum {
 - (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
 
 // Messages
-- (void)captureMessage:(NSString *)message;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
-
+//
 // All entries from additionalExtra/additionalTags are added to extra/tags.
 //
 // If dictionaries contain the same key, the entries from extra/tags dictionaries will be replaced with entries
 // from additionalExtra/additionalTags dictionaries.
-- (void)captureMessage:(NSString *)message
-                 level:(RavenLogLevel)level
-       additionalExtra:(NSDictionary *)additionalExtra
-        additionalTags:(NSDictionary *)additionalTags;
+- (void)captureMessage:(NSString *)message;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags;
 
-- (void)captureMessage:(NSString *)message
-                 level:(RavenLogLevel)level
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level
        additionalExtra:(NSDictionary *)additionalExtra
         additionalTags:(NSDictionary *)additionalTags
                 method:(const char *)method
@@ -57,8 +53,14 @@ typedef enum {
                   line:(NSInteger)line;
 
 // Exceptions
+//
+// All entries from additionalExtra/additionalTags are added to extra/tags.
+//
+// If dictionaries contain the same key, the entries from extra/tags dictionaries will be replaced with entries
+// from additionalExtra/additionalTags dictionaries.
 - (void)captureException:(NSException *)exception;
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException *)exception additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
 @end
