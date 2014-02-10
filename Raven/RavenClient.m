@@ -46,9 +46,13 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)setTags:(NSDictionary *)tags {
+    [self setTags:tags withDefaultValues:YES];
+}
+
+- (void)setTags:(NSDictionary *)tags withDefaultValues:(BOOL)withDefaultValues {
     NSMutableDictionary *mTags = [[NSMutableDictionary alloc] initWithDictionary:tags];
 
-    if (![mTags objectForKey:@"Build version"]) {
+    if (withDefaultValues && ![mTags objectForKey:@"Build version"]) {
         NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         if (buildVersion) {
             [mTags setObject:buildVersion forKey:@"Build version"];
@@ -56,12 +60,12 @@ void exceptionHandler(NSException *exception) {
     }
 
 #if TARGET_OS_IPHONE
-    if (![mTags objectForKey:@"OS version"]) {
+    if (withDefaultValues && ![mTags objectForKey:@"OS version"]) {
         NSString *osVersion = [[UIDevice currentDevice] systemVersion];
         [mTags setObject:osVersion forKey:@"OS version"];
     }
 
-    if (![mTags objectForKey:@"Device model"]) {
+    if (withDefaultValues && ![mTags objectForKey:@"Device model"]) {
         struct utsname systemInfo;
         uname(&systemInfo);
         NSString *deviceModel = [NSString stringWithCString:systemInfo.machine

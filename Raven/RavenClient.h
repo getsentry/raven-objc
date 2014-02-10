@@ -24,6 +24,14 @@ typedef enum {
 @property (strong, nonatomic) NSDictionary *extra;
 @property (strong, nonatomic) NSDictionary *tags;
 
+// By setting tags with setTags: selector it will also set default settings:
+// - Build version
+// - OS version (on iOS)
+// - Device model (on iOS)
+//
+// For full control use this method.
+- (void)setTags:(NSDictionary *)tags withDefaultValues:(BOOL)withDefaultValues;
+
 // Singleton and initializers
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
 + (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
