@@ -60,6 +60,17 @@ NSData * JSONEncode(id object, NSError **error) {
         
         [invocation invoke];
         [invocation getReturnValue:&data];
+
+        if (! data && error != NULL) {
+            SEL _SBJsonErrorSelector = NSSelectorFromString(@"error");
+
+            invocation = [NSInvocation invocationWithMethodSignature:[writer methodSignatureForSelector:_SBJsonErrorSelector]];
+            invocation.target = writer;
+            invocation.selector = _SBJsonErrorSelector;
+
+            [invocation invoke];
+            [invocation getReturnValue:error];
+        }
     } else if (_YAJLSelector && [object respondsToSelector:_YAJLSelector]) {
         @try {
             __unsafe_unretained NSString *JSONString = nil;
@@ -146,6 +157,17 @@ id JSONDecode(NSData *data, NSError **error) {
 
         [invocation invoke];
         [invocation getReturnValue:&JSON];
+
+        if (! JSON && error != NULL) {
+            SEL _SBJsonErrorSelector = NSSelectorFromString(@"error");
+
+            invocation = [NSInvocation invocationWithMethodSignature:[parser methodSignatureForSelector:_SBJsonErrorSelector]];
+            invocation.target = parser;
+            invocation.selector = _SBJsonErrorSelector;
+
+            [invocation invoke];
+            [invocation getReturnValue:error];
+        }
     } else if (_YAJLSelector && [data respondsToSelector:_YAJLSelector]) {
         NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[data methodSignatureForSelector:_YAJLSelector]];
         invocation.target = data;
