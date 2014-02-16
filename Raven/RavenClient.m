@@ -137,7 +137,7 @@ void exceptionHandler(NSException *exception) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
                                [[NSString stringWithUTF8String:file] lastPathComponent], @"filename",
                                [NSString stringWithUTF8String:method], @"function",
-                               [NSNumber numberWithInt:line], @"lineno",
+                               [NSNumber numberWithInteger:line], @"lineno",
                                nil];
 
         stacktrace = [NSArray arrayWithObject:frame];
