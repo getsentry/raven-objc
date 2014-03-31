@@ -19,6 +19,8 @@
 - (NSString *)generateUUID;
 - (NSDictionary *)prepareDictionaryForMessage:(NSString *)message
                                         level:(RavenLogLevel)level
+                              additionalExtra:(NSDictionary *)additionalExtra
+                               additionalTags:(NSDictionary *)additionalTags
                                       culprit:(NSString *)culprit
                                    stacktrace:(NSArray *)stacktrace
                                     exception:(NSDictionary *)exceptionDict;

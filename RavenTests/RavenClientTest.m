@@ -80,7 +80,7 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
 }
 
 
-- (void)testCaptureMessageWithFullArgSpec
+- (void)testCaptureMessageWithMessageAndLevelAndMethodAndFileAndLine
 {
     [self.client captureMessage:@"An example message" level:kRavenLogLevelDebugWarning
                          method:"method name" file:"filename" line:34];
@@ -103,13 +103,47 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
+- (void)testCaptureMessageWithMessageAndLevelAndExtraAndTags
+{
+    [self.client captureMessage:@"An example message"
+                          level:kRavenLogLevelDebugWarning
+                additionalExtra:@{@"key" : @"extra value"}
+                 additionalTags:@{@"key" : @"tag value"}];
+
+    NSDictionary *lastEvent = self.client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    STAssertTrue([keys containsObject:@"message"], @"Missing message");
+    STAssertTrue([keys containsObject:@"project"], @"Missing project");
+    STAssertTrue([keys containsObject:@"level"], @"Missing level");
+    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
+    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+
+    STAssertEquals([[lastEvent objectForKey:@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
+    STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
+
+    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+                   @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+                   @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
+    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+                 @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
+    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+                   @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
+}
+
 - (void)testClientWithExtraAndTags
 {
     NSDictionary *extra = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
     NSDictionary *tags = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
 
     MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN extra:extra tags:tags];
-    [client captureMessage:@"An example message"];
+    [client captureMessage:@"An example message"
+                     level:kRavenLogLevelDebugWarning
+           additionalExtra:@{@"key2" : @"extra value"}
+            additionalTags:@{@"key2" : @"tag value"}];
 
     NSDictionary *lastEvent = client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
@@ -119,8 +153,32 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     STAssertEquals([[lastEvent objectForKey:@"extra"] objectForKey:@"key"], @"value", @"Missing extra data");
     STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key"], @"value", @"Missing tags data");
 
+    STAssertEquals([[lastEvent objectForKey:@"extra"] objectForKey:@"key2"], @"extra value", @"Missing extra data");
+    STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key2"], @"tag value", @"Missing tags data");
+
     STAssertNotNil([[lastEvent objectForKey:@"tags"] objectForKey:@"OS version"], @"Missing tags data");
     STAssertNotNil([[lastEvent objectForKey:@"tags"] objectForKey:@"Device model"], @"Missing tags data");
+}
+
+- (void)testClientWithRewritingExtraAndTags
+{
+    NSDictionary *extra = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+    NSDictionary *tags = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN extra:extra tags:tags];
+    [client captureMessage:@"An example message"
+                     level:kRavenLogLevelDebugWarning
+           additionalExtra:@{@"key" : @"extra value"}
+            additionalTags:@{@"key" : @"tag value"}];
+
+    NSDictionary *lastEvent = client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+
+    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+
+    STAssertEquals([[lastEvent objectForKey:@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
+    STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
 }
 
 @end
