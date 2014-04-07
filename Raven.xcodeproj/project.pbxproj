@@ -22,10 +22,8 @@
 		0A46FEC6156FA72300D97F26 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A46FEC4156FA72300D97F26 /* InfoPlist.strings */; };
 		0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FEC8156FA72300D97F26 /* RavenClientTest.m */; };
 		0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
-		0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
 		8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 		8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC141168E725100408CDB /* RavenConfigTest.m */; };
-		8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */; };
 		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
 		8BAEC156168E748700408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 /* End PBXBuildFile section */
@@ -56,8 +54,6 @@
 		0A46FEC8156FA72300D97F26 /* RavenClientTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RavenClientTest.m; sourceTree = "<group>"; };
 		0A46FED8156FA8D900D97F26 /* RavenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient.h; sourceTree = "<group>"; };
 		0A46FED9156FA8D900D97F26 /* RavenClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenClient.m; sourceTree = "<group>"; };
-		0AB52B73157048CC002404B0 /* RavenJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenJSONUtilities.h; sourceTree = "<group>"; };
-		0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenJSONUtilities.m; sourceTree = "<group>"; };
 		8BAEC123168E6D0200408CDB /* RavenClient_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient_Private.h; sourceTree = "<group>"; };
 		8BAEC13C168E6FC100408CDB /* RavenConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenConfig.h; sourceTree = "<group>"; };
 		8BAEC13D168E6FC100408CDB /* RavenConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfig.m; sourceTree = "<group>"; };
@@ -172,8 +168,6 @@
 		0A46FED2156FA74700D97F26 /* Raven */ = {
 			isa = PBXGroup;
 			children = (
-				0AB52B73157048CC002404B0 /* RavenJSONUtilities.h */,
-				0AB52B74157048CC002404B0 /* RavenJSONUtilities.m */,
 				0A46FED8156FA8D900D97F26 /* RavenClient.h */,
 				0A46FED9156FA8D900D97F26 /* RavenClient.m */,
 				8BAEC123168E6D0200408CDB /* RavenClient_Private.h */,
@@ -294,7 +288,6 @@
 				0A46FEAE156FA72300D97F26 /* AppDelegate.m in Sources */,
 				0A46FEB4156FA72300D97F26 /* ViewController.m in Sources */,
 				0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */,
-				0AB52B75157048CC002404B0 /* RavenJSONUtilities.m in Sources */,
 				8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +298,6 @@
 			files = (
 				8BAEC154168E747900408CDB /* RavenClient.m in Sources */,
 				8BAEC156168E748700408CDB /* RavenConfig.m in Sources */,
-				8BAEC153168E747900408CDB /* RavenJSONUtilities.m in Sources */,
 				0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */,
 				8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */,
 			);
