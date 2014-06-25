@@ -106,12 +106,12 @@ void exceptionHandler(NSException *exception) {
 - (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
     self = [super init];
     if (self) {
-        self.config = [[RavenConfig alloc] init];
-        self.extra = extra;
-        self.tags = tags;
+        _config = [[RavenConfig alloc] init];
+        _extra = extra;
+        _tags = tags;
 
         // Parse DSN
-        if (![self.config setDSN:DSN]) {
+        if (![_config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
             return nil;
         }
