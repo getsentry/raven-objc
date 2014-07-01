@@ -306,29 +306,15 @@ void exceptionHandler(NSException *exception) {
     [request setValue:[NSString stringWithFormat:@"%d", [JSON length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:JSON];
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
-
-    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    if (connection) {
-        self.receivedData = [NSMutableData data];
-    }
-}
-
-#pragma mark - NSURLConnectionDelegate
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [self.receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [self.receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"JSON sent to Sentry");
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data) {
+            self.receivedData = data;
+        } else {
+             NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+            self.receivedData = nil;
+        }
+    }];
 }
 
 @end
