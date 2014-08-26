@@ -18,10 +18,7 @@
                                                                        file:__FILE__ \
                                                                        line:__LINE__];
 
-#define RavenCaptureException(exception) [[RavenClient sharedClient] captureException:exception \
-                                                                 additionalExtra:@{@"Self" : [NSString stringWithFormat:@"%@ <%p>", NSStringFromClass(self.class), self], @"File" : [[NSString stringWithUTF8String:__FILE__]lastPathComponent], @"Line" : [NSString stringWithFormat:@"%d", __LINE__], @"Function" : [NSString stringWithFormat:@"%s", __FUNCTION__]} \
-                                                                  additionalTags:nil \
-                                                                         sendNow:YES]
+#define RavenCaptureException(exception) [[RavenClient sharedClient] captureException:exception method:__FUNCTION__ file:__FILE__ line:__LINE__ sendNow:YES];
 
 
 typedef enum {
@@ -90,6 +87,7 @@ typedef enum {
 - (void)captureException:(NSException *)exception;
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
 - (void)captureException:(NSException *)exception additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException*)exception method:(const char*)method file:(const char*)file line:(NSInteger)line sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
 @end

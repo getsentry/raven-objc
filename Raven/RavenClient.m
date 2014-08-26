@@ -223,6 +223,55 @@ void exceptionHandler(NSException *exception) {
     }
 }
 
+- (void)captureException:(NSException *)exception method:(const char *)method file:(const char *)file line:(NSInteger)line sendNow:(BOOL)sendNow {
+    NSString *message = [NSString stringWithFormat:@"%@: %@", exception.name, exception.reason];
+
+    NSDictionary *exceptionDict = [NSDictionary dictionaryWithObjectsAndKeys:
+            exception.name, @"type",
+            exception.reason, @"value",
+                    nil];
+
+    NSArray *callStack = [exception callStackSymbols];
+    NSMutableArray *stacktrace;
+    if (method && file && line) {
+        NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
+                [[NSString stringWithUTF8String:file] lastPathComponent], @"filename",
+                [NSString stringWithUTF8String:method], @"function",
+                [NSNumber numberWithInt:line], @"lineno",
+                        nil];
+
+        stacktrace = [NSMutableArray arrayWithObject:frame];
+    }
+    for (NSString *call in callStack) {
+        [stacktrace addObject:[NSDictionary dictionaryWithObjectsAndKeys:call, @"function", nil]];
+    }
+
+    NSDictionary *data = [self prepareDictionaryForMessage:message
+                                                     level:kRavenLogLevelDebugFatal
+                                           additionalExtra:nil
+                                            additionalTags:nil
+                                                   culprit:nil
+                                                stacktrace:stacktrace
+                                                 exception:exceptionDict];
+
+    if (!sendNow) {
+        // We can't send this exception to Sentry now, e.g. because the app is killed before the
+        // connection can be made. So, save it into NSUserDefaults.
+        NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+        if (reports != nil) {
+            NSMutableArray *reportsCopy = [reports mutableCopy];
+            [reportsCopy addObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reportsCopy forKey:userDefaultsKey];
+        } else {
+            reports = [NSArray arrayWithObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [self sendDictionary:data];
+    }
+}
+
 - (void)setupExceptionHandler {
     NSSetUncaughtExceptionHandler(&exceptionHandler);
 
