@@ -55,6 +55,11 @@
     RavenCaptureError(error);
 }
 
+- (IBAction)sendException {
+    NSException *exception;
+    RavenCaptureException(exception);
+}
+
 #pragma mark - UITableViewDelegate
 // Nothing...
 
