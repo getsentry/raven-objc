@@ -181,4 +181,23 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     STAssertEquals([[lastEvent objectForKey:@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
 }
 
+- (void)testClientWithLogger
+{
+    NSDictionary *extra = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+    NSDictionary *tags = [NSDictionary dictionaryWithObjectsAndKeys:@"value", @"key", nil];
+    NSString *logger = @"Logger value";
+    
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN extra:extra tags:tags logger:logger];
+    [client captureMessage:@"An example message"];
+    
+    NSDictionary *lastEvent = client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+    
+    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+                   @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+    STAssertEquals([lastEvent valueForKey:@"logger"], @"Logger value",
+                   @"Invalid value for logger: %@", [lastEvent valueForKey:@"logger"]);
+
+}
+
 @end

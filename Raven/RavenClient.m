@@ -91,6 +91,10 @@ void exceptionHandler(NSException *exception) {
     return [[self alloc] initWithDSN:DSN extra:extra tags:tags];
 }
 
++ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
+    return [[self alloc] initWithDSN:DSN extra:extra tags:tags logger:logger];
+}
+
 + (RavenClient *)sharedClient {
     return sharedClient;
 }
@@ -104,11 +108,16 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
+    return [self initWithDSN:DSN extra:extra tags:tags logger:nil];
+}
+
+- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
     self = [super init];
     if (self) {
         self.config = [[RavenConfig alloc] init];
         self.extra = extra;
         self.tags = tags;
+        self.logger = logger;
 
         // Parse DSN
         if (![self.config setDSN:DSN]) {
@@ -325,7 +334,8 @@ void exceptionHandler(NSException *exception) {
 
             extra, @"extra",
             tags, @"tags",
-
+            self.logger ?: @"", @"logger",
+            
             message, @"message",
             culprit ?: @"", @"culprit",
             stacktraceDict, @"stacktrace",
