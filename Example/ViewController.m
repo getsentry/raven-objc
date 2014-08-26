@@ -50,6 +50,11 @@
     [self performSelector:@selector(nonExistingSelector)];
 }
 
+- (IBAction)sendError {
+    NSError *error;
+    RavenCaptureError(error);
+}
+
 #pragma mark - UITableViewDelegate
 // Nothing...
 

@@ -10,6 +10,11 @@
 
 #define RavenCaptureMessage( s, ... ) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:(s), ##__VA_ARGS__] level:kRavenLogLevelDebugInfo method:__FUNCTION__ file:__FILE__ line:__LINE__]
 
+#define RavenCaptureError(error) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"%@", error] \
+                                                                 level:kRavenLogLevelDebugError \
+                                                       additionalExtra:@{@"Self" : [NSString stringWithFormat:@"%@ <%p>", NSStringFromClass(self.class), self], @"File" : [NSString stringWithUTF8String:__FILE__].lastPathComponent, @"Line" : [NSString stringWithFormat:@"%d", __LINE__], @"Function" : [NSString stringWithFormat:@"%s", __FUNCTION__]} \
+                                                        additionalTags:nil]
+
 typedef enum {
     kRavenLogLevelDebug,
     kRavenLogLevelDebugInfo,
