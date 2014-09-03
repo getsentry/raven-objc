@@ -10,6 +10,17 @@
 
 #define RavenCaptureMessage( s, ... ) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:(s), ##__VA_ARGS__] level:kRavenLogLevelDebugInfo method:__FUNCTION__ file:__FILE__ line:__LINE__]
 
+#define RavenCaptureError(error) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"%@", error] \
+                                                                      level:kRavenLogLevelDebugError \
+                                                            additionalExtra:nil \
+                                                             additionalTags:nil \
+                                                                     method:__FUNCTION__ \
+                                                                       file:__FILE__ \
+                                                                       line:__LINE__];
+
+#define RavenCaptureException(exception) [[RavenClient sharedClient] captureException:exception method:__FUNCTION__ file:__FILE__ line:__LINE__ sendNow:YES];
+
+
 typedef enum {
     kRavenLogLevelDebug,
     kRavenLogLevelDebugInfo,
@@ -76,6 +87,7 @@ typedef enum {
 - (void)captureException:(NSException *)exception;
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
 - (void)captureException:(NSException *)exception additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException*)exception method:(const char*)method file:(const char*)file line:(NSInteger)line sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
 @end

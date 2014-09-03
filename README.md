@@ -73,8 +73,16 @@ Or, capture a single exception:
     [self performSelector:@selector(nonExistingSelector)];
 }
 @catch (NSException *exception) {
-    [[RavenClient sharedClient] captureException:exception];
+    RavenCaptureException(exception);
 }
+```
+
+You can also capture errors:
+
+```objective-c
+NSError *error;
+[[NSFileManager defaultManager] removeItemAtPath:@"some/path" error:&error];
+RavenCaptureError(error);
 ```
 
 *Note: when using the global exception handler, exceptions will be sent the __next__ time the app is started.*
