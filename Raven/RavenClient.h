@@ -18,6 +18,15 @@
                                                                        file:__FILE__ \
                                                                        line:__LINE__];
 
+#define RavenCaptureNetworkError(error) [[RavenClient sharedClient] captureMessage:[NSString stringWithFormat:@"%@", error] \
+                                                                             level:kRavenLogLevelDebugError \
+                                                                   additionalExtra:nil \
+                                                                    additionalTags:nil \
+                                                                            method:__FUNCTION__ \
+                                                                              file:__FILE__ \
+                                                                              line:__LINE__ \
+                                                                           sendNow:NO];
+
 #define RavenCaptureException(exception) [[RavenClient sharedClient] captureException:exception method:__FUNCTION__ file:__FILE__ line:__LINE__ sendNow:YES];
 
 
@@ -78,6 +87,15 @@ typedef enum {
                 method:(const char *)method
                   file:(const char *)file
                   line:(NSInteger)line;
+
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags
+                method:(const char *)method
+                  file:(const char *)file
+                  line:(NSInteger)line
+               sendNow:(BOOL)sendNow;
 
 /**
  * Exceptions
