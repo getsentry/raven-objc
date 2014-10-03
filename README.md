@@ -87,21 +87,9 @@ RavenCaptureError(error);
 
 *Note: when using the global exception handler, exceptions will be sent the __next__ time the app is started.*
 
-
-## Requirements
-
-### JSON
-
-raven-objc uses [`NSJSONSerialization`](http://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html) to generate the JSON payload, if it is available. If your app targets a platform where this class is not available (i.e. iOS < 5.0) you can include one of the following JSON libraries to your project for raven-objc to automatically detect and use.
-
-* [JSONKit](https://github.com/johnezang/JSONKit)
-* [SBJson](https://stig.github.com/json-framework/)
-* [YAJL](https://lloyd.github.com/yajl/)
-* [NextiveJson](https://github.com/nextive/NextiveJson)
-
 ### ARC Support
 
-raven-objc requires ARC support and should run on iOS 4.0 and Mac OS X 10.6.
+raven-objc requires ARC support and should run on iOS 5.0 and Mac OS X 10.7.
 
 ## Issues and questions
 
