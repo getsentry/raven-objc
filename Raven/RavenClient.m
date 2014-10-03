@@ -374,7 +374,13 @@ void exceptionHandler(NSException *exception) {
     NSError *error = nil;
     
     NSData *JSON = JSONEncode(dict, &error);
-    [self sendJSON:JSON];
+
+    if (JSON) {
+        [self sendJSON:JSON];
+    }
+    else {
+        NSLog(@"Failed to encode JSON with error %@", error);
+    }
 }
 
 - (void)sendJSON:(NSData *)JSON {
