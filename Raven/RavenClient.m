@@ -160,6 +160,19 @@ void exceptionHandler(NSException *exception) {
                 method:(const char *)method
                   file:(const char *)file
                   line:(NSInteger)line {
+    
+    [self captureMessage:message level:level additionalExtra:additionalExtra additionalTags:additionalTags method:method file:file line:line sendNow:YES];
+}
+
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags
+                method:(const char *)method
+                  file:(const char *)file
+                  line:(NSInteger)line
+               sendNow:(BOOL)sendNow {
+    
     NSArray *stacktrace;
     if (method && file && line) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -167,10 +180,10 @@ void exceptionHandler(NSException *exception) {
                                [NSString stringWithUTF8String:method], @"function",
                                [NSNumber numberWithInt:line], @"lineno",
                                nil];
-
+        
         stacktrace = [NSArray arrayWithObject:frame];
     }
-
+    
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:level
                                            additionalExtra:additionalExtra
@@ -178,8 +191,22 @@ void exceptionHandler(NSException *exception) {
                                                    culprit:file ? [NSString stringWithUTF8String:file] : nil
                                                 stacktrace:stacktrace
                                                  exception:nil];
-
-    [self sendDictionary:data];
+    
+    if (!sendNow) {
+        // We can't send this message to Sentry now, e.g. because the error was network related and the user may not have a data connection So, save it into NSUserDefaults.
+        NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+        if (reports != nil) {
+            NSMutableArray *reportsCopy = [reports mutableCopy];
+            [reportsCopy addObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reportsCopy forKey:userDefaultsKey];
+        } else {
+            reports = [NSArray arrayWithObject:data];
+            [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    } else {
+        [self sendDictionary:data];
+    }
 }
 
 #pragma mark - Exceptions
