@@ -10,7 +10,6 @@
 #import "RavenClient.h"
 #import "RavenClient_Private.h"
 #import "RavenConfig.h"
-#import "RavenJSONUtilities.h"
 
 NSString *const kRavenLogLevelArray[] = {
     @"debug",
@@ -371,9 +370,7 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendDictionary:(NSDictionary *)dict {
-    NSError *error = nil;
-    
-    NSData *JSON = JSONEncode(dict, &error);
+    NSData *JSON = [self encodeJSON:dict];
     [self sendJSON:JSON];
 }
 
@@ -415,6 +412,13 @@ void exceptionHandler(NSException *exception) {
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSLog(@"JSON sent to Sentry");
+}
+
+#pragma mark - JSON helpers
+
+- (NSData *)encodeJSON:(id)obj {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:obj options:0 error:nil];
+    return data;
 }
 
 @end
