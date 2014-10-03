@@ -178,7 +178,7 @@ void exceptionHandler(NSException *exception) {
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
                                [[NSString stringWithUTF8String:file] lastPathComponent], @"filename",
                                [NSString stringWithUTF8String:method], @"function",
-                               [NSNumber numberWithInt:line], @"lineno",
+                               [NSNumber numberWithInteger:line], @"lineno",
                                nil];
         
         stacktrace = [NSArray arrayWithObject:frame];
@@ -378,10 +378,10 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendJSON:(NSData *)JSON {
-    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%d, sentry_key=%@, sentry_secret=%@",
+    NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%ld, sentry_key=%@, sentry_secret=%@",
                         sentryProtocol,
                         sentryClient,
-                        (NSInteger)[NSDate timeIntervalSinceReferenceDate],
+                        (long)[NSDate timeIntervalSinceReferenceDate],
                         self.config.publicKey,
                         self.config.secretKey];
 
@@ -389,7 +389,7 @@ void exceptionHandler(NSException *exception) {
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%d", [JSON length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[JSON length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:JSON];
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
 
