@@ -21,7 +21,7 @@ NSString *const kRavenLogLevelArray[] = {
 
 NSString *const userDefaultsKey = @"nl.mixedCase.RavenClient.Exceptions";
 NSString *const sentryProtocol = @"4";
-NSString *const sentryClient = @"raven-objc/0.1.0";
+NSString *const sentryClient = @"raven-objc/0.4.0";
 
 static RavenClient *sharedClient = nil;
 
