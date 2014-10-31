@@ -357,6 +357,7 @@ void exceptionHandler(NSException *exception) {
             [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
             kRavenLogLevelArray[level], @"level",
             @"objc", @"platform",
+            self.user ?: @"", @"user",
 
             extra, @"extra",
             tags, @"tags",
@@ -389,6 +390,9 @@ void exceptionHandler(NSException *exception) {
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[JSON length]] forHTTPHeaderField:@"Content-Length"];
     [request setHTTPBody:JSON];
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
+
+    NSString *jsonString = [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding];
+    NSLog(@"%@", jsonString);
 
     NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
     if (connection) {
