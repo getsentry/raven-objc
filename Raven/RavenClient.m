@@ -394,10 +394,8 @@ void exceptionHandler(NSException *exception) {
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data) {
         	NSLog(@"JSON sent to Sentry");
-            self.receivedData = data;
         } else {
              NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-            self.receivedData = nil;
         }
     }];
 }
