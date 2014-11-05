@@ -39,7 +39,7 @@ typedef enum {
 } RavenLogLevel;
 
 
-@interface RavenClient : NSObject <NSURLConnectionDelegate>
+@interface RavenClient : NSObject
 
 @property (strong, nonatomic) NSDictionary *extra;
 @property (strong, nonatomic) NSDictionary *tags;

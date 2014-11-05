@@ -113,13 +113,13 @@ void exceptionHandler(NSException *exception) {
 - (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
     self = [super init];
     if (self) {
-        self.config = [[RavenConfig alloc] init];
-        self.extra = extra;
+		_config = [[RavenConfig alloc] init];
+        _extra = extra;
+        _logger = logger;
         self.tags = tags;
-        self.logger = logger;
 
         // Parse DSN
-        if (![self.config setDSN:DSN]) {
+        if (![_config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
             return nil;
         }
@@ -391,31 +391,15 @@ void exceptionHandler(NSException *exception) {
     [request setHTTPBody:JSON];
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
 
-    NSString *jsonString = [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", jsonString);
-
-    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-    if (connection) {
-        self.receivedData = [NSMutableData data];
-    }
-}
-
-#pragma mark - NSURLConnectionDelegate
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [self.receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [self.receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"JSON sent to Sentry");
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data) {
+        	NSLog(@"JSON sent to Sentry");
+            self.receivedData = data;
+        } else {
+             NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+            self.receivedData = nil;
+        }
+    }];
 }
 
 #pragma mark - JSON helpers
