@@ -12,7 +12,6 @@
 
 @interface RavenClient ()
 
-@property (strong, nonatomic) NSData *receivedData;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) RavenConfig *config;
 
