@@ -173,21 +173,26 @@ void exceptionHandler(NSException *exception) {
                sendNow:(BOOL)sendNow {
     
     NSArray *stacktrace;
+    NSString *culprit;
     if (method && file && line) {
+        NSString *filename = [[NSString stringWithUTF8String:file] lastPathComponent];
+        NSString *methodString = [NSString stringWithUTF8String:method];
         NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:
-                               [[NSString stringWithUTF8String:file] lastPathComponent], @"filename",
-                               [NSString stringWithUTF8String:method], @"function",
+                               filename, @"filename",
+                               methodString, @"function",
                                [NSNumber numberWithInteger:line], @"lineno",
                                nil];
         
         stacktrace = [NSArray arrayWithObject:frame];
+
+        culprit = [NSString stringWithFormat:@"%@ / %@", filename, methodString];
     }
     
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:level
                                            additionalExtra:additionalExtra
                                             additionalTags:additionalTags
-                                                   culprit:file ? [NSString stringWithUTF8String:file] : nil
+                                                   culprit:culprit
                                                 stacktrace:stacktrace
                                                  exception:nil];
     
