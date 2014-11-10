@@ -28,6 +28,8 @@ Alternatively you can add this code as a Git submodule:
 While you are free to initialize as many instances of `RavenClient` as is appropriate for your application, there is a shared singleton instance that is globally available. This singleton instance is often configured in your app delegate's `application:didFinishLaunchingWithOptions:` method:
 
 ```objective-c
+#import "RavenClient.h"
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [RavenClient clientWithDSN:@"[SENTRY_DSN]"];
     // [...]
