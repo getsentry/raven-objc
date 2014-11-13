@@ -8,7 +8,7 @@ Objective-c client for [Sentry](https://www.getsentry.com/welcome/).
 The easiest way is to use [CocoaPods](http://cocoapods.org). It takes care of all required frameworks and third party dependencies:
 
 ```ruby
-pod 'Raven'
+pod 'raven', :git => 'https://github.com/getsentry/raven-objc.git', :tag => '0.5.0'
 ```
 
 **Alternatively**, you can install manually.
