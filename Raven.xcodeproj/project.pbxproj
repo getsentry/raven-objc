@@ -213,7 +213,7 @@
 			name = RavenTests;
 			productName = RavenTests;
 			productReference = 0A46FEBA156FA72300D97F26 /* RavenTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -221,6 +221,7 @@
 		0A46FE90156FA72300D97F26 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0610;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Gangverk;
 			};
