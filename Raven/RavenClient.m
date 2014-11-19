@@ -320,7 +320,8 @@ void exceptionHandler(NSException *exception) {
     if (reports != nil && [reports count]) {
         for (NSDictionary *data in reports) {
             [self sendDictionary:data success:^{
-                [[NSUserDefaults standardUserDefaults] setObject:[NSArray array] forKey:userDefaultsKey];
+                [reports removeObject:data];
+                [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             } error:^(NSError *err) {
                 // Coudn't send report, keep for next time
@@ -402,8 +403,16 @@ void exceptionHandler(NSException *exception) {
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data) {
         	NSLog(@"JSON sent to Sentry");
+            if (success != nil)
+            {
+                success();
+            }
         } else {
              NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+            if (error != nil)
+            {
+                error(connectionError);
+            }
         }
     }];
 }
