@@ -98,19 +98,23 @@ void exceptionHandler(NSException *exception) {
     return sharedClient;
 }
 
-- (id)initWithDSN:(NSString *)DSN {
++ (void)setSharedClient:(RavenClient *)client {
+    sharedClient = client;
+}
+
+- (instancetype)initWithDSN:(NSString *)DSN {
     return [self initWithDSN:DSN extra:@{}];
 }
 
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra {
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra {
     return [self initWithDSN:DSN extra:extra tags:@{}];
 }
 
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags {
     return [self initWithDSN:DSN extra:extra tags:tags logger:nil];
 }
 
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
     self = [super init];
     if (self) {
 		_config = [[RavenConfig alloc] init];
@@ -122,11 +126,6 @@ void exceptionHandler(NSException *exception) {
         if (![_config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
             return nil;
-        }
-
-        // Save singleton
-        if (sharedClient == nil) {
-            sharedClient = self;
         }
     }
 
