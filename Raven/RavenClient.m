@@ -11,6 +11,10 @@
 #import "RavenClient_Private.h"
 #import "RavenConfig.h"
 
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
+
 NSString *const kRavenLogLevelArray[] = {
     @"debug",
     @"info",
