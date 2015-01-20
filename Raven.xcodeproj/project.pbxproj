@@ -22,6 +22,12 @@
 		0A46FEC6156FA72300D97F26 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A46FEC4156FA72300D97F26 /* InfoPlist.strings */; };
 		0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FEC8156FA72300D97F26 /* RavenClientTest.m */; };
 		0A46FEDA156FA8D900D97F26 /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
+		1DA6EDFE1A6E0A6C00F2510C /* Raven.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DA6EDFD1A6E0A6C00F2510C /* Raven.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DA6EE121A6E0AD400F2510C /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
+		1DA6EE131A6E0AD600F2510C /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
+		1DA6EE141A6E0ADB00F2510C /* RavenConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAEC13C168E6FC100408CDB /* RavenConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DA6EE151A6E0ADE00F2510C /* RavenClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A46FED8156FA8D900D97F26 /* RavenClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1DA6EE161A6E0AE000F2510C /* RavenClient_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BAEC123168E6D0200408CDB /* RavenClient_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8BAEC13E168E6FC100408CDB /* RavenConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC13D168E6FC100408CDB /* RavenConfig.m */; };
 		8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BAEC141168E725100408CDB /* RavenConfigTest.m */; };
 		8BAEC154168E747900408CDB /* RavenClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A46FED9156FA8D900D97F26 /* RavenClient.m */; };
@@ -54,6 +60,9 @@
 		0A46FEC8156FA72300D97F26 /* RavenClientTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RavenClientTest.m; sourceTree = "<group>"; };
 		0A46FED8156FA8D900D97F26 /* RavenClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient.h; sourceTree = "<group>"; };
 		0A46FED9156FA8D900D97F26 /* RavenClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenClient.m; sourceTree = "<group>"; };
+		1DA6EDF91A6E0A6C00F2510C /* Raven.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Raven.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DA6EDFC1A6E0A6C00F2510C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1DA6EDFD1A6E0A6C00F2510C /* Raven.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Raven.h; sourceTree = "<group>"; };
 		8BAEC123168E6D0200408CDB /* RavenClient_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenClient_Private.h; sourceTree = "<group>"; };
 		8BAEC13C168E6FC100408CDB /* RavenConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RavenConfig.h; sourceTree = "<group>"; };
 		8BAEC13D168E6FC100408CDB /* RavenConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RavenConfig.m; sourceTree = "<group>"; };
@@ -82,6 +91,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1DA6EDF51A6E0A6C00F2510C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +120,7 @@
 			children = (
 				0A46FE99156FA72300D97F26 /* RavenExample.app */,
 				0A46FEBA156FA72300D97F26 /* RavenTests.octest */,
+				1DA6EDF91A6E0A6C00F2510C /* Raven.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -168,16 +185,40 @@
 		0A46FED2156FA74700D97F26 /* Raven */ = {
 			isa = PBXGroup;
 			children = (
+				1DA6EDFD1A6E0A6C00F2510C /* Raven.h */,
 				0A46FED8156FA8D900D97F26 /* RavenClient.h */,
 				0A46FED9156FA8D900D97F26 /* RavenClient.m */,
 				8BAEC123168E6D0200408CDB /* RavenClient_Private.h */,
 				8BAEC13C168E6FC100408CDB /* RavenConfig.h */,
 				8BAEC13D168E6FC100408CDB /* RavenConfig.m */,
+				1DA6EDFB1A6E0A6C00F2510C /* Supporting Files */,
 			);
 			path = Raven;
 			sourceTree = "<group>";
 		};
+		1DA6EDFB1A6E0A6C00F2510C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1DA6EDFC1A6E0A6C00F2510C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1DA6EDF61A6E0A6C00F2510C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DA6EDFE1A6E0A6C00F2510C /* Raven.h in Headers */,
+				1DA6EE141A6E0ADB00F2510C /* RavenConfig.h in Headers */,
+				1DA6EE151A6E0ADE00F2510C /* RavenClient.h in Headers */,
+				1DA6EE161A6E0AE000F2510C /* RavenClient_Private.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		0A46FE98156FA72300D97F26 /* RavenExample */ = {
@@ -213,7 +254,25 @@
 			name = RavenTests;
 			productName = RavenTests;
 			productReference = 0A46FEBA156FA72300D97F26 /* RavenTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
+		};
+		1DA6EDF81A6E0A6C00F2510C /* Raven (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DA6EE101A6E0A6C00F2510C /* Build configuration list for PBXNativeTarget "Raven (iOS)" */;
+			buildPhases = (
+				1DA6EDF41A6E0A6C00F2510C /* Sources */,
+				1DA6EDF51A6E0A6C00F2510C /* Frameworks */,
+				1DA6EDF61A6E0A6C00F2510C /* Headers */,
+				1DA6EDF71A6E0A6C00F2510C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Raven (iOS)";
+			productName = Raven;
+			productReference = 1DA6EDF91A6E0A6C00F2510C /* Raven.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -223,6 +282,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Gangverk;
+				TargetAttributes = {
+					1DA6EDF81A6E0A6C00F2510C = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
 			};
 			buildConfigurationList = 0A46FE93156FA72300D97F26 /* Build configuration list for PBXProject "Raven" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -236,6 +300,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				1DA6EDF81A6E0A6C00F2510C /* Raven (iOS) */,
 				0A46FE98156FA72300D97F26 /* RavenExample */,
 				0A46FEB9156FA72300D97F26 /* RavenTests */,
 			);
@@ -258,6 +323,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A46FEC6156FA72300D97F26 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1DA6EDF71A6E0A6C00F2510C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +372,15 @@
 				8BAEC156168E748700408CDB /* RavenConfig.m in Sources */,
 				0A46FEC9156FA72300D97F26 /* RavenClientTest.m in Sources */,
 				8BAEC142168E725100408CDB /* RavenConfigTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1DA6EDF41A6E0A6C00F2510C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DA6EE121A6E0AD400F2510C /* RavenClient.m in Sources */,
+				1DA6EE131A6E0AD600F2510C /* RavenConfig.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +535,83 @@
 			};
 			name = Release;
 		};
+		1DA6EE0C1A6E0A6C00F2510C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = Raven/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Raven;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1DA6EE0D1A6E0A6C00F2510C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = Raven/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Raven;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -480,6 +638,15 @@
 			buildConfigurations = (
 				0A46FED0156FA72300D97F26 /* Debug */,
 				0A46FED1156FA72300D97F26 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DA6EE101A6E0A6C00F2510C /* Build configuration list for PBXNativeTarget "Raven (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DA6EE0C1A6E0A6C00F2510C /* Debug */,
+				1DA6EE0D1A6E0A6C00F2510C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
