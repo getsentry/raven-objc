@@ -45,6 +45,7 @@ typedef enum {
 @property (strong, nonatomic) NSDictionary *tags;
 @property (strong, nonatomic) NSString *logger;
 @property (strong, nonatomic) NSDictionary *user;
+@property (assign, nonatomic) BOOL debugMode;
 
 /**
  * By setting tags with setTags: selector it will also set default settings:

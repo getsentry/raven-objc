@@ -384,6 +384,11 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendJSON:(NSData *)JSON {
+    if (self.debugMode == YES) {
+        NSLog(@"Sentry JSON (will not be sent in Debug Mode):\n%@\n",
+              [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding]);
+        return;
+    }
     NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%ld, sentry_key=%@, sentry_secret=%@",
                         sentryProtocol,
                         sentryClient,
