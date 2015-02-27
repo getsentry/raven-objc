@@ -121,13 +121,14 @@ void exceptionHandler(NSException *exception) {
 - (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger {
     self = [super init];
     if (self) {
-		_config = [[RavenConfig alloc] init];
+        if (DSN)
+            _config = [[RavenConfig alloc] init];
         _extra = extra;
         _logger = logger;
         self.tags = tags;
-
+        
         // Parse DSN
-        if (![_config setDSN:DSN]) {
+        if (_config && ![_config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
             return nil;
         }
@@ -361,7 +362,7 @@ void exceptionHandler(NSException *exception) {
 
     return [NSDictionary dictionaryWithObjectsAndKeys:
             [self generateUUID], @"event_id",
-            self.config.projectId, @"project",
+            self.config.projectId ?: @"", @"project",
             [self.dateFormatter stringFromDate:[NSDate date]], @"timestamp",
             kRavenLogLevelArray[level], @"level",
             @"objc", @"platform",
@@ -384,6 +385,12 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendJSON:(NSData *)JSON {
+    if (!self.config) {
+        NSLog(@"Sentry JSON (DSN not configured, will not be sent):\n%@\n",
+              [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding]);
+        return;
+    }
+    
     NSString *header = [NSString stringWithFormat:@"Sentry sentry_version=%@, sentry_client=%@, sentry_timestamp=%ld, sentry_key=%@, sentry_secret=%@",
                         sentryProtocol,
                         sentryClient,

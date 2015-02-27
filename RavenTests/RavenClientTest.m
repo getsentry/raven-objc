@@ -217,4 +217,23 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
 }
 
+- (void)testClientWithoutDSN
+{
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:nil];
+    client.user = @{@"username" : @"timor", @"ip_address" : @"127.0.0.1"};
+    
+    [client captureMessage:@"An example message"];
+    
+    NSDictionary *lastEvent = client.lastEvent;
+    
+    NSArray *keys = [lastEvent allKeys];
+    STAssertTrue([keys containsObject:@"user"], @"Missing user");
+    
+    STAssertEquals([lastEvent[@"user"] objectForKey:@"username"], @"timor", @"Missing username");
+    STAssertEquals([lastEvent[@"user"] objectForKey:@"ip_address"], @"127.0.0.1", @"Missing ip address");
+    
+    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+                   @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+}
+
 @end
