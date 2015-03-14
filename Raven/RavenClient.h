@@ -45,6 +45,7 @@ typedef enum {
 @property (strong, nonatomic) NSDictionary *tags;
 @property (strong, nonatomic) NSString *logger;
 @property (strong, nonatomic) NSDictionary *user;
+@property (assign, nonatomic) BOOL debugMode;
 
 /**
  * By setting tags with setTags: selector it will also set default settings:
@@ -61,12 +62,14 @@ typedef enum {
 + (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
 + (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
 + (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger;
-+ (RavenClient *)sharedClient;
 
-- (id)initWithDSN:(NSString *)DSN;
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
-- (id)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger;
++ (instancetype)sharedClient;
++ (void)setSharedClient:(RavenClient *)client;
+
+- (instancetype)initWithDSN:(NSString *)DSN;
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
+- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger;
 
 /**
  * Messages

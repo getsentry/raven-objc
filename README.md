@@ -8,7 +8,7 @@ Objective-c client for [Sentry](https://www.getsentry.com/welcome/).
 The easiest way is to use [CocoaPods](http://cocoapods.org). It takes care of all required frameworks and third party dependencies:
 
 ```ruby
-pod 'Raven', :git => 'https://github.com/getsentry/raven-objc.git', :tag => '0.5.0'
+pod 'Raven', :git => 'https://github.com/getsentry/raven-objc.git', :tag => '1.0.1'
 ```
 
 **Alternatively**, you can install manually.
@@ -31,14 +31,17 @@ While you are free to initialize as many instances of `RavenClient` as is approp
 #import "RavenClient.h"
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [RavenClient clientWithDSN:@"[SENTRY_DSN]"];
+    RavenClient *client = [RavenClient clientWithDSN:@"[SENTRY_DSN]"];
     // [...]
     return YES;
 }
 ```
-The first `RavenClient` that is initialized is automatically configured as the singleton instance and becomes available via the `sharedClient` singleton method:
+If you would like to use the singleton pattern, you can set the shared client that is used with the
+`+[setSharedClient:]` class method. After setting a client, you can retreive the singleton instance via
+the `sharedClient` singleton method:
 
 ```objective-c
+[RavenClient setSharedClient:client];
 NSLog(@"I am your RavenClient singleton : %@", [RavenClient sharedClient]);
 ```
 
@@ -61,8 +64,8 @@ Setup a global exception handler:
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
-    [[RavenClient sharedClient] setupExceptionHandler];
+    RavenClient *client = [RavenClient clientWithDSN:@"https://[public]:[secret]@[server]/[project id]"];
+    [client setupExceptionHandler];
     // [...]
     return YES;
 }
