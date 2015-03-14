@@ -37,7 +37,7 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
 - (void)testGenerateUUID
 {
     NSString *uuid = [self.client generateUUID];
-    STAssertEquals([uuid length], (NSUInteger)32, @"Invalid value for UUID returned: %@", uuid);
+    XCTAssertEqual([uuid length], (NSUInteger)32, @"Invalid value for UUID returned: %@", uuid);
 }
 
 - (void)testCaptureMessageWithOnlyMessage
@@ -45,16 +45,16 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     [self.client captureMessage:@"An example message"];
     NSDictionary *lastEvent = self.client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
-    STAssertTrue([keys containsObject:@"message"], @"Missing message");
-    STAssertTrue([keys containsObject:@"project"], @"Missing project");
-    STAssertTrue([keys containsObject:@"level"], @"Missing level");
-    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    XCTAssertTrue([keys containsObject:@"message"], @"Missing message");
+    XCTAssertTrue([keys containsObject:@"project"], @"Missing project");
+    XCTAssertTrue([keys containsObject:@"level"], @"Missing level");
+    XCTAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                  @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
-    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+    XCTAssertEqual([lastEvent valueForKey:@"project"], self.client.config.projectId,
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
-    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"info"],
+    XCTAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"info"],
                    @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
 }
 
@@ -63,19 +63,19 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     [self.client captureMessage:@"An example message" level:kRavenLogLevelDebugWarning];
     NSDictionary *lastEvent = self.client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
-    STAssertTrue([keys containsObject:@"message"], @"Missing message");
-    STAssertTrue([keys containsObject:@"project"], @"Missing project");
-    STAssertTrue([keys containsObject:@"level"], @"Missing level");
-    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
-    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    XCTAssertTrue([keys containsObject:@"message"], @"Missing message");
+    XCTAssertTrue([keys containsObject:@"project"], @"Missing project");
+    XCTAssertTrue([keys containsObject:@"level"], @"Missing level");
+    XCTAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    XCTAssertTrue([keys containsObject:@"platform"], @"Missing platform");
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
-    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+    XCTAssertEqual([lastEvent valueForKey:@"project"], self.client.config.projectId,
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
-    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+    XCTAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
-    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+    XCTAssertEqual([lastEvent valueForKey:@"platform"], @"objc",
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
@@ -86,20 +86,20 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
                          method:"method name" file:"filename" line:34];
     NSDictionary *lastEvent = self.client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
-    STAssertTrue([keys containsObject:@"message"], @"Missing message");
-    STAssertTrue([keys containsObject:@"project"], @"Missing project");
-    STAssertTrue([keys containsObject:@"level"], @"Missing level");
-    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
-    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
-    STAssertTrue([keys containsObject:@"stacktrace"], @"Missing stacktrace");
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    XCTAssertTrue([keys containsObject:@"message"], @"Missing message");
+    XCTAssertTrue([keys containsObject:@"project"], @"Missing project");
+    XCTAssertTrue([keys containsObject:@"level"], @"Missing level");
+    XCTAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    XCTAssertTrue([keys containsObject:@"platform"], @"Missing platform");
+    XCTAssertTrue([keys containsObject:@"stacktrace"], @"Missing stacktrace");
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
-    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+    XCTAssertEqual([lastEvent valueForKey:@"project"], self.client.config.projectId,
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
-    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+    XCTAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
-    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+    XCTAssertEqual([lastEvent valueForKey:@"platform"], @"objc",
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
@@ -112,25 +112,25 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
 
     NSDictionary *lastEvent = self.client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
-    STAssertTrue([keys containsObject:@"message"], @"Missing message");
-    STAssertTrue([keys containsObject:@"project"], @"Missing project");
-    STAssertTrue([keys containsObject:@"level"], @"Missing level");
-    STAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
-    STAssertTrue([keys containsObject:@"platform"], @"Missing platform");
-    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
-    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+    XCTAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    XCTAssertTrue([keys containsObject:@"message"], @"Missing message");
+    XCTAssertTrue([keys containsObject:@"project"], @"Missing project");
+    XCTAssertTrue([keys containsObject:@"level"], @"Missing level");
+    XCTAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    XCTAssertTrue([keys containsObject:@"platform"], @"Missing platform");
+    XCTAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    XCTAssertTrue([keys containsObject:@"tags"], @"Missing tags");
 
-    STAssertEquals([lastEvent[@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
-    STAssertEquals([lastEvent[@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
+    XCTAssertEqual([lastEvent[@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
+    XCTAssertEqual([lastEvent[@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
 
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
-    STAssertEquals([lastEvent valueForKey:@"project"], self.client.config.projectId,
+    XCTAssertEqual([lastEvent valueForKey:@"project"], self.client.config.projectId,
                    @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
-    STAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+    XCTAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
-    STAssertEquals([lastEvent valueForKey:@"platform"], @"objc",
+    XCTAssertEqual([lastEvent valueForKey:@"platform"], @"objc",
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
@@ -148,16 +148,16 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     NSDictionary *lastEvent = client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
 
-    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
-    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
-    STAssertEquals([lastEvent[@"extra"] objectForKey:@"key"], @"value", @"Missing extra data");
-    STAssertEquals([lastEvent[@"tags"] objectForKey:@"key"], @"value", @"Missing tags data");
+    XCTAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    XCTAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+    XCTAssertEqual([lastEvent[@"extra"] objectForKey:@"key"], @"value", @"Missing extra data");
+    XCTAssertEqual([lastEvent[@"tags"] objectForKey:@"key"], @"value", @"Missing tags data");
 
-    STAssertEquals([lastEvent[@"extra"] objectForKey:@"key2"], @"extra value", @"Missing extra data");
-    STAssertEquals([lastEvent[@"tags"] objectForKey:@"key2"], @"tag value", @"Missing tags data");
+    XCTAssertEqual([lastEvent[@"extra"] objectForKey:@"key2"], @"extra value", @"Missing extra data");
+    XCTAssertEqual([lastEvent[@"tags"] objectForKey:@"key2"], @"tag value", @"Missing tags data");
 
-    STAssertNotNil([lastEvent[@"tags"] objectForKey:@"OS version"], @"Missing tags data");
-    STAssertNotNil([lastEvent[@"tags"] objectForKey:@"Device model"], @"Missing tags data");
+    XCTAssertNotNil([lastEvent[@"tags"] objectForKey:@"OS version"], @"Missing tags data");
+    XCTAssertNotNil([lastEvent[@"tags"] objectForKey:@"Device model"], @"Missing tags data");
 }
 
 - (void)testClientWithRewritingExtraAndTags
@@ -174,11 +174,11 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     NSDictionary *lastEvent = client.lastEvent;
     NSArray *keys = [lastEvent allKeys];
 
-    STAssertTrue([keys containsObject:@"extra"], @"Missing extra");
-    STAssertTrue([keys containsObject:@"tags"], @"Missing tags");
+    XCTAssertTrue([keys containsObject:@"extra"], @"Missing extra");
+    XCTAssertTrue([keys containsObject:@"tags"], @"Missing tags");
 
-    STAssertEquals([lastEvent[@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
-    STAssertEquals([lastEvent[@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
+    XCTAssertEqual([lastEvent[@"extra"] objectForKey:@"key"], @"extra value", @"Missing extra data");
+    XCTAssertEqual([lastEvent[@"tags"] objectForKey:@"key"], @"tag value", @"Missing tags data");
 }
 
 - (void)testClientWithLogger
@@ -192,9 +192,9 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     
     NSDictionary *lastEvent = client.lastEvent;
 
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
-    STAssertEquals([lastEvent valueForKey:@"logger"], @"Logger value",
+    XCTAssertEqual([lastEvent valueForKey:@"logger"], @"Logger value",
                    @"Invalid value for logger: %@", [lastEvent valueForKey:@"logger"]);
 
 }
@@ -208,12 +208,12 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     NSDictionary *lastEvent = client.lastEvent;
 
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"user"], @"Missing user");
+    XCTAssertTrue([keys containsObject:@"user"], @"Missing user");
 
-    STAssertEquals([lastEvent[@"user"] objectForKey:@"username"], @"timor", @"Missing username");
-    STAssertEquals([lastEvent[@"user"] objectForKey:@"ip_address"], @"127.0.0.1", @"Missing ip address");
+    XCTAssertEqual([lastEvent[@"user"] objectForKey:@"username"], @"timor", @"Missing username");
+    XCTAssertEqual([lastEvent[@"user"] objectForKey:@"ip_address"], @"127.0.0.1", @"Missing ip address");
 
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
 }
 
@@ -227,12 +227,12 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     NSDictionary *lastEvent = client.lastEvent;
     
     NSArray *keys = [lastEvent allKeys];
-    STAssertTrue([keys containsObject:@"user"], @"Missing user");
+    XCTAssertTrue([keys containsObject:@"user"], @"Missing user");
     
-    STAssertEquals([lastEvent[@"user"] objectForKey:@"username"], @"timor", @"Missing username");
-    STAssertEquals([lastEvent[@"user"] objectForKey:@"ip_address"], @"127.0.0.1", @"Missing ip address");
+    XCTAssertEqual([lastEvent[@"user"] objectForKey:@"username"], @"timor", @"Missing username");
+    XCTAssertEqual([lastEvent[@"user"] objectForKey:@"ip_address"], @"127.0.0.1", @"Missing ip address");
     
-    STAssertEquals([lastEvent valueForKey:@"message"], @"An example message",
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
 }
 
