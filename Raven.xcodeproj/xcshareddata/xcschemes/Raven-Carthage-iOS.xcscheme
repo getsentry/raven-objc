@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7EE5B0321A973A300086A3AE"
                BuildableName = "Raven.framework"
-               BlueprintName = "Raven"
+               BlueprintName = "Raven (iOS)"
                ReferencedContainer = "container:Raven.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,7 +44,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7EE5B0321A973A300086A3AE"
             BuildableName = "Raven.framework"
-            BlueprintName = "Raven"
+            BlueprintName = "Raven (iOS)"
             ReferencedContainer = "container:Raven.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -62,7 +62,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7EE5B0321A973A300086A3AE"
             BuildableName = "Raven.framework"
-            BlueprintName = "Raven"
+            BlueprintName = "Raven (iOS)"
             ReferencedContainer = "container:Raven.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
