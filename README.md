@@ -36,6 +36,13 @@ While you are free to initialize as many instances of `RavenClient` as is approp
     return YES;
 }
 ```
+
+If you do not want to send to Sentry in debug builds, you can configure `RavenClient` without a DSN: 
+```objective-c
+RavenClient *client = [RavenClient clientWithDSN:nil];
+```
+The client will output the data as JSON, but not send anything to Sentry.
+
 If you would like to use the singleton pattern, you can set the shared client that is used with the
 `+[setSharedClient:]` class method. After setting a client, you can retreive the singleton instance via
 the `sharedClient` singleton method:
