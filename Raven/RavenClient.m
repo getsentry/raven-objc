@@ -56,7 +56,12 @@ void exceptionHandler(NSException *exception) {
     NSMutableDictionary *mTags = [[NSMutableDictionary alloc] initWithDictionary:tags];
 
     if (withDefaultValues && ![mTags objectForKey:@"Build version"]) {
+        //VERSION
         NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        
+        //BUILD
+        buildVersion = [buildVersion stringByAppendingString:[NSString stringWithFormat:@"---Build: %@", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]];
+        
         if (buildVersion) {
             [mTags setObject:buildVersion forKey:@"Build version"];
         }
@@ -385,6 +390,8 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)sendJSON:(NSData *)JSON {
+    
+#ifdef RAVEN_RELEASE_VERSION
     if (!self.config) {
         NSLog(@"Sentry JSON (DSN not configured, will not be sent):\n%@\n",
               [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding]);
@@ -413,6 +420,7 @@ void exceptionHandler(NSException *exception) {
              NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
         }
     }];
+#endif
 }
 
 #pragma mark - JSON helpers
