@@ -12,7 +12,7 @@
 /**
     IF YOU DON'T WANT TO TRACK ANYMORE, COMMENT THIS LINE.
  */
-//#define     RAVEN_RELEASE_VERSION      (123)
+#define     RAVEN_RELEASE_VERSION      (123)
 
 FOUNDATION_EXPORT double RavenVersionNumber;
 FOUNDATION_EXPORT const unsigned char RavenVersionString[];
