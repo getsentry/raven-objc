@@ -318,7 +318,12 @@ void exceptionHandler(NSException *exception) {
 
 - (void)setupExceptionHandler {
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+    [self flush];
+}
 
+
+- (void)flush
+{
     // Process saved crash reports
     NSMutableArray *reports = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey]];
     if (reports != nil && [reports count]) {
@@ -333,6 +338,7 @@ void exceptionHandler(NSException *exception) {
         }
     }
 }
+
 
 #pragma mark - Private methods
 
