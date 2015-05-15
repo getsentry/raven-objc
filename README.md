@@ -67,7 +67,7 @@ RavenCaptureMessage(@"TEST %i %@ %f", 1, @"2", 3.0);
 
 ### Handling exceptions
 
-Setup a global exception handler:
+Setup a global exception handler (only iOS):
 
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
