@@ -108,7 +108,7 @@ Recommended macro to send a message with automatic stacktrace:
 Handling Exceptions
 -------------------
 
-Setup a global exception handler:
+Setup a global exception handler (only iOS):
 
 .. sourcecode:: objc
 
