@@ -1,11 +1,10 @@
 {
-  "wizards": {
-    "objective-c": {
+  "platforms": {
+    "objc": {
       "name": "Objective-C",
-      "client_lib": "raven-objc",
-      "is_framework": false,
+      "type": "language",
       "doc_link": "",
-      "snippets": [
+      "wizard": [
         "index#installation",
         "index#configuration",
         "index#handling-exceptions"
