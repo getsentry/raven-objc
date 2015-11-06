@@ -57,6 +57,8 @@ typedef enum {
  */
 - (void)setTags:(NSDictionary *)tags withDefaultValues:(BOOL)withDefaultValues;
 
+- (void)setRelease:(NSString *)release;
+
 // Singleton and initializers
 + (RavenClient *)clientWithDSN:(NSString *)DSN;
 + (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
