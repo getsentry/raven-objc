@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Gangverk. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "RavenClient_Private.h"
 
 
@@ -18,7 +18,7 @@
 @end
 
 
-@interface RavenClientTest : SenTestCase
+@interface RavenClientTest : XCTestCase
 
 @property MockRavenClient *client;
 
