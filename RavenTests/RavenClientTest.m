@@ -34,6 +34,7 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     [super tearDown];
 }
 
+
 - (void)testGenerateUUID
 {
     NSString *uuid = [self.client generateUUID];
@@ -234,6 +235,33 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
     
     XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
                    @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+}
+
+- (void)testClientWithEmptyRelease
+{
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN];
+    [client captureMessage:@"An example message"];
+    
+    NSDictionary *lastEvent = client.lastEvent;
+    
+    XCTAssertEqual([lastEvent valueForKey:@"release"], @"",
+                   @"Invalid value for release: %@", [lastEvent valueForKey:@"release"]);
+    
+}
+
+- (void)testClientWithExplicitRelease
+{
+    MockRavenClient *client = [[MockRavenClient alloc] initWithDSN:testDSN];
+    
+    [client setRelease:@"1.0"];
+
+    [client captureMessage:@"An example message"];
+    
+    NSDictionary *lastEvent = client.lastEvent;
+    
+    XCTAssertEqual([lastEvent valueForKey:@"release"], @"1.0",
+                   @"Invalid value for release: %@", [lastEvent valueForKey:@"release"]);
+    
 }
 
 @end
