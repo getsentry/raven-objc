@@ -1,6 +1,9 @@
-xcodebuild \
-  -scheme RavenTests \
-  -target RavenTests \
-  -sdk iphonesimulator \
-  -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.1' \
-  test
+#!/bin/bash -eu
+
+FLAGS="-scheme RavenTests -target RavenTests -sdk iphonesimulator"
+
+if [ -e $(which xcpretty) ]; then
+    xcodebuild $FLAGS test | xcpretty --color
+else
+    xcodebuild $FLAGS test
+fi
