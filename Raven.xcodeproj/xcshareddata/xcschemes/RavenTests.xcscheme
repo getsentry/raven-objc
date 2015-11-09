@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0A46FEB9156FA72300D97F26"
-               BuildableName = "RavenTests.octest"
+               BuildableName = "RavenTests.xctest"
                BlueprintName = "RavenTests"
                ReferencedContainer = "container:Raven.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0A46FEB9156FA72300D97F26"
-            BuildableName = "RavenTests.octest"
+            BuildableName = "RavenTests.xctest"
             BlueprintName = "RavenTests"
             ReferencedContainer = "container:Raven.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0A46FEB9156FA72300D97F26"
-            BuildableName = "RavenTests.octest"
+            BuildableName = "RavenTests.xctest"
             BlueprintName = "RavenTests"
             ReferencedContainer = "container:Raven.xcodeproj">
          </BuildableReference>
