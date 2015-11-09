@@ -24,12 +24,14 @@ NSString *const kRavenLogLevelArray[] = {
 };
 
 NSString *const userDefaultsKey = @"nl.mixedCase.RavenClient.Exceptions";
-NSString *const sentryProtocol = @"4";
+NSString *const sentryProtocol = @"7";
 NSString *const sentryClient = @"raven-objc/0.5.0";
 
 static RavenClient *sharedClient = nil;
 
-@implementation RavenClient
+@implementation RavenClient {
+    NSString *_release;
+}
 
 void exceptionHandler(NSException *exception) {
 	[[RavenClient sharedClient] captureException:exception sendNow:NO];
@@ -46,6 +48,10 @@ void exceptionHandler(NSException *exception) {
     }
 
     return _dateFormatter;
+}
+
+- (void)setRelease:(NSString *)newRelease {
+    _release = newRelease;
 }
 
 - (void)setTags:(NSDictionary *)tags {
@@ -127,6 +133,12 @@ void exceptionHandler(NSException *exception) {
         _logger = logger;
         self.tags = tags;
 
+        // bind release
+        NSString *buildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        if (buildVersion) {
+            _release = buildVersion;
+        }
+        
         // Parse DSN
         if (_config && ![_config setDSN:DSN]) {
             NSLog(@"Invalid DSN %@!", DSN);
@@ -371,6 +383,7 @@ void exceptionHandler(NSException *exception) {
             extra, @"extra",
             tags, @"tags",
             self.logger ?: @"", @"logger",
+            _release ?: @"", @"release",
 
             message, @"message",
             culprit ?: @"", @"culprit",
