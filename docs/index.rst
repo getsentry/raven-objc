@@ -14,7 +14,7 @@
 
     The Objective-C SDK is maintained and supported by the Sentry
     community.  Learn more about the project on `GitHub
-    <git://github.com/getsentry/raven-objc>`__.
+    <https://github.com/getsentry/raven-objc>`__.
 
 
 The Objective-C client (raven-objc) allows the submission of information
