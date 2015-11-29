@@ -42,10 +42,10 @@ typedef enum {
 
 @interface RavenClient : NSObject
 
-@property (strong, nonatomic) NSDictionary *extra;
-@property (strong, nonatomic) NSDictionary *tags;
+@property (strong, nonatomic) NSDictionary<NSString*,NSString*> *extra;
+@property (strong, nonatomic) NSDictionary<NSString*,NSString*> *tags;
 @property (strong, nonatomic, nullable) NSString *logger;
-@property (strong, nonatomic, nullable) NSDictionary *user;
+@property (strong, nonatomic, nullable) NSDictionary<NSString*,NSString*> *user;
 @property (assign, nonatomic) BOOL debugMode;
 
 /**
@@ -56,23 +56,23 @@ typedef enum {
  *
  * For full control use this method.
  */
-- (void)setTags:(NSDictionary *)tags withDefaultValues:(BOOL)withDefaultValues;
+- (void)setTags:(NSDictionary<NSString*,NSString*> *)tags withDefaultValues:(BOOL)withDefaultValues;
 
 - (void)setRelease:(nullable NSString *)release;
 
 // Singleton and initializers
 + (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN;
-+ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra;
-+ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
-+ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(nullable NSString *)logger;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags logger:(nullable NSString *)logger;
 
 + (nullable instancetype)sharedClient;
 + (void)setSharedClient:(nullable RavenClient *)client;
 
 - (nullable instancetype)initWithDSN:(nullable NSString *)DSN;
-- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra;
-- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
-- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(nullable NSString *)logger;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSString*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags logger:(nullable NSString *)logger;
 
 /**
  * Messages
@@ -85,20 +85,20 @@ typedef enum {
 - (void)captureMessage:(NSString *)message;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(nullable const char *)method file:(nullable const char *)file line:(NSInteger)line;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(nullable NSDictionary *)additionalExtra additionalTags:(nullable NSDictionary *)additionalTags;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(nullable NSDictionary<NSString*,NSString*> *)additionalExtra additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags;
 
 - (void)captureMessage:(NSString *)message
                  level:(RavenLogLevel)level
-       additionalExtra:(nullable NSDictionary *)additionalExtra
-        additionalTags:(nullable NSDictionary *)additionalTags
+       additionalExtra:(nullable NSDictionary<NSString*,NSString*> *)additionalExtra
+        additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags
                 method:(nullable const char *)method
                   file:(nullable const char *)file
                   line:(NSInteger)line;
 
 - (void)captureMessage:(NSString *)message
                  level:(RavenLogLevel)level
-       additionalExtra:(nullable NSDictionary *)additionalExtra
-        additionalTags:(nullable NSDictionary *)additionalTags
+       additionalExtra:(nullable NSDictionary<NSString*,NSString*> *)additionalExtra
+        additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags
                 method:(nullable const char *)method
                   file:(nullable const char *)file
                   line:(NSInteger)line
@@ -114,7 +114,7 @@ typedef enum {
  */
 - (void)captureException:(NSException *)exception;
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
-- (void)captureException:(NSException *)exception additionalExtra:(nullable NSDictionary *)additionalExtra additionalTags:(nullable NSDictionary *)additionalTags sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException *)exception additionalExtra:(nullable NSDictionary<NSString*,NSString*> *)additionalExtra additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags sendNow:(BOOL)sendNow;
 - (void)captureException:(NSException*)exception method:(nullable const char*)method file:(nullable const char*)file line:(NSInteger)line sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
