@@ -8,13 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface RavenConfig : NSObject
 
 - (BOOL)setDSN:(NSString *)DSN;
 
-@property (strong, nonatomic) NSURL *serverURL;
-@property (strong, nonatomic) NSString *publicKey;
-@property (strong, nonatomic) NSString *secretKey;
-@property (strong, nonatomic) NSString *projectId;
+@property (strong, nonatomic, nullable) NSURL *serverURL;
+@property (strong, nonatomic, nullable) NSString *publicKey;
+@property (strong, nonatomic, nullable) NSString *secretKey;
+@property (strong, nonatomic, nullable) NSString *projectId;
 
 @end
+
+NS_ASSUME_NONNULL_END
