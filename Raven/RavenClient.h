@@ -103,6 +103,14 @@ typedef enum {
                   line:(NSInteger)line
                sendNow:(BOOL)sendNow;
 
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags
+            stacktrace:(NSArray *)stacktrace
+               culprit:(NSString *)culprit
+               sendNow:(BOOL)sendNow;
+
 /**
  * Exceptions
  *

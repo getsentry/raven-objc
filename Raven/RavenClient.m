@@ -203,7 +203,16 @@ void exceptionHandler(NSException *exception) {
 
         culprit = [NSString stringWithFormat:@"%@ / %@", filename, methodString];
     }
+    [self captureMessage:message level:level additionalExtra:additionalExtra additionalTags:additionalTags stacktrace:stacktrace culprit:culprit sendNow:sendNow];
+}
 
+- (void)captureMessage:(NSString *)message
+                 level:(RavenLogLevel)level
+       additionalExtra:(NSDictionary *)additionalExtra
+        additionalTags:(NSDictionary *)additionalTags
+           stacktrace:(NSArray *)stacktrace
+               culprit:(NSString *)culprit
+               sendNow:(BOOL)sendNow {
     NSDictionary *data = [self prepareDictionaryForMessage:message
                                                      level:level
                                            additionalExtra:additionalExtra
@@ -228,6 +237,8 @@ void exceptionHandler(NSException *exception) {
         [self sendDictionary:data];
     }
 }
+
+
 
 #pragma mark - Exceptions
 

@@ -104,6 +104,32 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
                    @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
 }
 
+
+- (void)testCaptureMessageWithMessageAndLevelAndStacktrace
+{
+    NSDictionary *frame = [NSDictionary dictionaryWithObjectsAndKeys:@"method name", @"method", @"filename", @"file", @34, @"line", nil];
+    NSArray *stacktrace = [NSArray arrayWithObjects:frame, nil];
+    [self.client captureMessage:@"An example message" level:kRavenLogLevelDebugWarning additionalExtra:nil additionalTags:nil stacktrace:stacktrace culprit:nil sendNow:YES];
+
+    NSDictionary *lastEvent = self.client.lastEvent;
+    NSArray *keys = [lastEvent allKeys];
+    XCTAssertTrue([keys containsObject:@"event_id"], @"Missing event_id");
+    XCTAssertTrue([keys containsObject:@"message"], @"Missing message");
+    XCTAssertTrue([keys containsObject:@"project"], @"Missing project");
+    XCTAssertTrue([keys containsObject:@"level"], @"Missing level");
+    XCTAssertTrue([keys containsObject:@"timestamp"], @"Missing timestamp");
+    XCTAssertTrue([keys containsObject:@"platform"], @"Missing platform");
+    XCTAssertTrue([keys containsObject:@"stacktrace"], @"Missing stacktrace");
+    XCTAssertEqual([lastEvent valueForKey:@"message"], @"An example message",
+                   @"Invalid value for message: %@", [lastEvent valueForKey:@"message"]);
+    XCTAssertEqual([lastEvent valueForKey:@"project"], self.client.config.projectId,
+                   @"Invalid value for project: %@", [lastEvent valueForKey:@"project"]);
+    XCTAssertTrue([[lastEvent valueForKey:@"level"] isEqualToString:@"warning"],
+                  @"Invalid value for level: %@", [lastEvent valueForKey:@"level"]);
+    XCTAssertEqual([lastEvent valueForKey:@"platform"], @"objc",
+                   @"Invalid value for platform: %@", [lastEvent valueForKey:@"platform"]);
+}
+
 - (void)testCaptureMessageWithMessageAndLevelAndExtraAndTags
 {
     [self.client captureMessage:@"An example message"
