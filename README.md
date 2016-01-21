@@ -8,6 +8,7 @@ Objective-c client for [Sentry](https://www.getsentry.com/welcome/).
 * [Download](https://cocoapods.org/pods/Raven)
 * [Issue tracker](https://github.com/getsentry/raven-objc/issues)
 * [![Join the chat at https://gitter.im/getsentry/raven-objc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/getsentry/raven-objc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+* [![Build Status](https://travis-ci.org/getsentry/raven-objc.svg?branch=master)](https://travis-ci.org/getsentry/raven-objc)
 
 ## Contributing
 
