@@ -48,6 +48,10 @@
     self.publicKey = [DSNURL user];
     self.secretKey = [DSNURL password];
     
+    if (!self.serverURL || !self.publicKey || !self.secretKey) {
+        return NO;
+    }
+
     return YES;
 }
 
