@@ -1,4 +1,8 @@
-# raven-objc
+
+# *** DEPRECATED ***
+Use [Sentry-Swift](https://github.com/getsentry/sentry-swift)
+
+# raven-objc 
 
 Objective-c client for [Sentry](https://www.getsentry.com/welcome/).
 
