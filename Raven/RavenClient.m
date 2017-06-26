@@ -141,7 +141,7 @@ void exceptionHandler(NSException *exception) {
         
         // Parse DSN
         if (_config && ![_config setDSN:DSN]) {
-            NSLog(@"Invalid DSN %@!", DSN);
+            NSLog(@"Invalid DSN: %@", DSN);
             return nil;
         }
     }
@@ -431,12 +431,21 @@ void exceptionHandler(NSException *exception) {
     [request setValue:header forHTTPHeaderField:@"X-Sentry-Auth"];
 
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data) {
-        	NSLog(@"JSON sent to Sentry");
-        } else {
-             NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+        if (connectionError) {
+            if (data) {
+                NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"Connection failed! Error - %@ %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey], dataString);
+            } else {
+                NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+            }
+            
+        } else if (response) {
+            NSLog(@"Response from Sentry: %@", response);
         }
     }];
+    
+    NSLog(@"JSON sent to Sentry");
+
 }
 
 #pragma mark - JSON helpers
