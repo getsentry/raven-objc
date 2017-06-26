@@ -33,7 +33,7 @@ static RavenClient *sharedClient = nil;
     NSString *_release;
 }
 
-void exceptionHandler(NSException *exception) {
+void ravenExceptionHandler(NSException *exception) {
 	[[RavenClient sharedClient] captureException:exception sendNow:NO];
 }
 
@@ -340,7 +340,7 @@ void exceptionHandler(NSException *exception) {
 }
 
 - (void)setupExceptionHandler {
-    NSSetUncaughtExceptionHandler(&exceptionHandler);
+    NSSetUncaughtExceptionHandler(&ravenExceptionHandler);
 
     // Process saved crash reports
     NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
