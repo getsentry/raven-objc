@@ -1,6 +1,6 @@
 
 # *** DEPRECATED ***
-Use [Sentry-Swift](https://github.com/getsentry/sentry-swift)
+This SDK is deprecated. Use [sentry-cocoa](https://github.com/getsentry/sentry-cocoa).
 
 # raven-objc 
 
