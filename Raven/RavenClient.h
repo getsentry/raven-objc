@@ -29,6 +29,7 @@
 
 #define RavenCaptureException(exception) [[RavenClient sharedClient] captureException:exception method:__FUNCTION__ file:__FILE__ line:__LINE__ sendNow:YES];
 
+NS_ASSUME_NONNULL_BEGIN
 
 typedef enum {
     kRavenLogLevelDebug,
@@ -41,10 +42,10 @@ typedef enum {
 
 @interface RavenClient : NSObject
 
-@property (strong, nonatomic) NSDictionary *extra;
-@property (strong, nonatomic) NSDictionary *tags;
-@property (strong, nonatomic) NSString *logger;
-@property (strong, nonatomic) NSDictionary *user;
+@property (strong, nonatomic) NSDictionary<NSString*,NSObject*> *extra;
+@property (strong, nonatomic) NSDictionary<NSString*,NSString*> *tags;
+@property (strong, nonatomic, nullable) NSString *logger;
+@property (strong, nonatomic, nullable) NSDictionary<NSString*,NSString*> *user;
 @property (assign, nonatomic) BOOL debugMode;
 
 /**
@@ -55,23 +56,23 @@ typedef enum {
  *
  * For full control use this method.
  */
-- (void)setTags:(NSDictionary *)tags withDefaultValues:(BOOL)withDefaultValues;
+- (void)setTags:(NSDictionary<NSString*,NSString*> *)tags withDefaultValues:(BOOL)withDefaultValues;
 
-- (void)setRelease:(NSString *)release;
+- (void)setRelease:(nullable NSString *)release;
 
 // Singleton and initializers
-+ (RavenClient *)clientWithDSN:(NSString *)DSN;
-+ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
-+ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
-+ (RavenClient *)clientWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags;
++ (nullable RavenClient *)clientWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags logger:(nullable NSString *)logger;
 
-+ (instancetype)sharedClient;
-+ (void)setSharedClient:(RavenClient *)client;
++ (nullable instancetype)sharedClient;
++ (void)setSharedClient:(nullable RavenClient *)client;
 
-- (instancetype)initWithDSN:(NSString *)DSN;
-- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra;
-- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags;
-- (instancetype)initWithDSN:(NSString *)DSN extra:(NSDictionary *)extra tags:(NSDictionary *)tags logger:(NSString *)logger;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags;
+- (nullable instancetype)initWithDSN:(nullable NSString *)DSN extra:(NSDictionary<NSString*,NSObject*> *)extra tags:(NSDictionary<NSString*,NSString*> *)tags logger:(nullable NSString *)logger;
 
 /**
  * Messages
@@ -83,23 +84,23 @@ typedef enum {
  */
 - (void)captureMessage:(NSString *)message;
 - (void)captureMessage:(NSString *)message level:(RavenLogLevel)level;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(const char *)method file:(const char *)file line:(NSInteger)line;
-- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level method:(nullable const char *)method file:(nullable const char *)file line:(NSInteger)line;
+- (void)captureMessage:(NSString *)message level:(RavenLogLevel)level additionalExtra:(nullable NSDictionary<NSString*,NSObject*> *)additionalExtra additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags;
 
 - (void)captureMessage:(NSString *)message
                  level:(RavenLogLevel)level
-       additionalExtra:(NSDictionary *)additionalExtra
-        additionalTags:(NSDictionary *)additionalTags
-                method:(const char *)method
-                  file:(const char *)file
+       additionalExtra:(nullable NSDictionary<NSString*,NSObject*> *)additionalExtra
+        additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags
+                method:(nullable const char *)method
+                  file:(nullable const char *)file
                   line:(NSInteger)line;
 
 - (void)captureMessage:(NSString *)message
                  level:(RavenLogLevel)level
-       additionalExtra:(NSDictionary *)additionalExtra
-        additionalTags:(NSDictionary *)additionalTags
-                method:(const char *)method
-                  file:(const char *)file
+       additionalExtra:(nullable NSDictionary<NSString*,NSObject*> *)additionalExtra
+        additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags
+                method:(nullable const char *)method
+                  file:(nullable const char *)file
                   line:(NSInteger)line
                sendNow:(BOOL)sendNow;
 
@@ -121,8 +122,10 @@ typedef enum {
  */
 - (void)captureException:(NSException *)exception;
 - (void)captureException:(NSException *)exception sendNow:(BOOL)sendNow;
-- (void)captureException:(NSException *)exception additionalExtra:(NSDictionary *)additionalExtra additionalTags:(NSDictionary *)additionalTags sendNow:(BOOL)sendNow;
-- (void)captureException:(NSException*)exception method:(const char*)method file:(const char*)file line:(NSInteger)line sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException *)exception additionalExtra:(nullable NSDictionary<NSString*,NSObject*> *)additionalExtra additionalTags:(nullable NSDictionary<NSString*,NSString*> *)additionalTags sendNow:(BOOL)sendNow;
+- (void)captureException:(NSException*)exception method:(nullable const char*)method file:(nullable const char*)file line:(NSInteger)line sendNow:(BOOL)sendNow;
 - (void)setupExceptionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END
