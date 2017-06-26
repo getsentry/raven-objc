@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = "https://getsentry.com/"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "David Cramer" => "dcramer@gmail.com" }
-  s.source       = { :git => "https://github.com/getsentry/raven-objc.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://github.com/toolboxash/raven-objc.git", :tag => s.version.to_s }
   s.source_files = ['Raven']
   s.requires_arc = true
   s.documentation_url = 'https://docs.getsentry.com/hosted/clients/objc/'

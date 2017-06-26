@@ -234,7 +234,7 @@ void exceptionHandler(NSException *exception) {
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [self sendDictionary:data];
+        [self sendDictionary:data success:nil error:nil];
     }
 }
 
@@ -286,7 +286,7 @@ void exceptionHandler(NSException *exception) {
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [self sendDictionary:data];
+        [self sendDictionary:data success:nil error:nil];
     }
 }
 
@@ -335,23 +335,33 @@ void exceptionHandler(NSException *exception) {
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [self sendDictionary:data];
+        [self sendDictionary:data success:nil error:nil];
     }
 }
 
 - (void)setupExceptionHandler {
     NSSetUncaughtExceptionHandler(&exceptionHandler);
+    [self flush];
+}
 
+
+- (void)flush
+{
     // Process saved crash reports
-    NSArray *reports = [[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey];
+    NSMutableArray *reports = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:userDefaultsKey]];
     if (reports != nil && [reports count]) {
         for (NSDictionary *data in reports) {
-            [self sendDictionary:data];
+            [self sendDictionary:data success:^{
+                [reports removeObject:data];
+                [[NSUserDefaults standardUserDefaults] setObject:reports forKey:userDefaultsKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            } error:^(NSError *err) {
+                // Coudn't send report, keep for next time
+            }];
         }
-        [[NSUserDefaults standardUserDefaults] setObject:[NSArray array] forKey:userDefaultsKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
+
 
 #pragma mark - Private methods
 
@@ -403,12 +413,12 @@ void exceptionHandler(NSException *exception) {
             nil];
 }
 
-- (void)sendDictionary:(NSDictionary *)dict {
+- (void)sendDictionary:(NSDictionary *)dict success:(void (^)(void))success error:(void (^)(NSError * err))error{
     NSData *JSON = [self encodeJSON:dict];
-    [self sendJSON:JSON];
+    [self sendJSON:JSON success:success error:error];
 }
 
-- (void)sendJSON:(NSData *)JSON {
+- (void)sendJSON:(NSData *)JSON success:(void (^)(void))success error:(void (^)(NSError *))error{
     if (!self.config) {
         NSLog(@"Sentry JSON (DSN not configured, will not be sent):\n%@\n",
               [[NSString alloc] initWithData:JSON encoding:NSUTF8StringEncoding]);
@@ -433,8 +443,16 @@ void exceptionHandler(NSException *exception) {
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue currentQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data) {
         	NSLog(@"JSON sent to Sentry");
+            if (success != nil)
+            {
+                success();
+            }
         } else {
              NSLog(@"Connection failed! Error - %@ %@", [connectionError localizedDescription], [[connectionError userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+            if (error != nil)
+            {
+                error(connectionError);
+            }
         }
     }];
 }

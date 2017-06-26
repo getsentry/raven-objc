@@ -23,7 +23,7 @@
                                       culprit:(NSString *)culprit
                                    stacktrace:(NSArray *)stacktrace
                                     exception:(NSDictionary *)exceptionDict;
-- (void)sendDictionary:(NSDictionary *)dict;
-- (void)sendJSON:(NSData *)JSON;
+- (void)sendDictionary:(NSDictionary *)dict success:(void (^)(void))success error:(void (^)(NSError *))error;
+- (void)sendJSON:(NSData *)JSON success:(void (^)(void))success error:(void (^)(NSError *err))error;
 
 @end

@@ -12,7 +12,7 @@ NSString *const testDSN = @"http://public:secret@example.com/foo";
 
 @implementation MockRavenClient
 
-- (void)sendDictionary:(NSDictionary *)dict
+- (void)sendDictionary:(NSDictionary *)dict success:(void (^)(void))success error:(void (^)(NSError *))error;
 {
     self.lastEvent = dict;
     self.numEvents += 1;
